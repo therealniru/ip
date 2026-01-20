@@ -235,8 +235,28 @@ public class Gojo {
                         // saveData();
                     }
 
+                } else if (input.startsWith("delete")) {
+                    String parts[] = input.split(" ", 2);
+                    if (parts.length < 2) {
+                        throw new ChatbotExceptions("Please specify a task number to delete.");
+                    }
+
+                    try {
+                        int index = Integer.parseInt(parts[1]) - 1;
+                        if (index < 0 || index >= tasks.size()) {
+                            throw new ChatbotExceptions("OOPS!!! The task number is out of bounds.");
+                        }
+                        Task removedTask = tasks.get(index);
+                        tasks.remove(index);
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println("  " + removedTask);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    } catch (NumberFormatException e) {
+                        throw new ChatbotExceptions("OOPS!!! The task number must be an integer.");
+                    }
+
                 } else {
-                    throw new ChatbotExceptions("OOPS!!! I'm sorry, but I don't know what that means 😭");
+                    throw new ChatbotExceptions("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
             } catch (ChatbotExceptions ce) {
                 System.out.println(ce.getMessage());

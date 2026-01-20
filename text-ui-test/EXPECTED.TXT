@@ -64,14 +64,6 @@ What would you like to do?
 ____________________________________________________________
 You: Here are the tasks in your list:
 ____________________________________________________________
-You: ChatbotExceptions: OOPS!!! The description of a todo cannot be empty.
-____________________________________________________________
-You: ChatbotExceptions: OOPS!!! The deadline cannot be empty.
-____________________________________________________________
-You: ChatbotExceptions: OOPS!!! The event cannot be empty.
-____________________________________________________________
-You: ChatbotExceptions: OOPS!!! I'm sorry, but I don't know what that means :-(
-____________________________________________________________
 You: Got it. I've added this task:
   [T][ ] read book
 Now you have 1 tasks in the list.
@@ -88,6 +80,24 @@ You: Here are the tasks in your list:
 1. [T][ ] read book
 2. [D][ ] return book (by: June 6th)
 3. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+____________________________________________________________
+You: Noted. I've removed this task:
+  [T][ ] read book
+Now you have 2 tasks in the list.
+____________________________________________________________
+You: Here are the tasks in your list:
+1. [D][ ] return book (by: June 6th)
+2. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+____________________________________________________________
+You: OOPS!!! The task number is out of bounds.
+____________________________________________________________
+You: OOPS!!! The task number must be an integer.
+____________________________________________________________
+You: Please specify a task number to delete.
+____________________________________________________________
+You: Here are the tasks in your list:
+1. [D][ ] return book (by: June 6th)
+2. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
 You: Bye, until next time - Stay Limitless ♾️
 ____________________________________________________________
