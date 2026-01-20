@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.TreeMap;
+
 
 public class Gojo {
     public static void main(String[] args) {
@@ -110,7 +110,7 @@ public class Gojo {
          * The list supports a maximum of 100 tasks, as specified by Level 2 requirements.
          * The order of insertion is preserved to allow sequential listing.
          */
-        List<String> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
 
         /*
          * Main interaction loop of the application.
@@ -154,6 +154,34 @@ public class Gojo {
                  * Any input that does not match a recognised command is interpreted
                  * as a task description and is added to the task list.
                  */
+            } else if (input.startsWith("unmark")){
+                System.out.println("OK, I've marked this task as not done yet:");
+                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", ""))-1;
+                tasks.get(taskNumber).markAsNotDone();
+                System.out.println(tasks.get(taskNumber));
+                /*
+                 * Handle task status update commands.
+                 *
+                 * This block processes commands that modify the completion status of tasks,
+                 * namely "mark" and "unmark".
+                 *
+                 * IMPORTANT:
+                 * The "unmark" command MUST be checked before the "mark" command.
+                 * This is because the string "unmark" contains the substring "mark".
+                 * Checking "mark" first would incorrectly treat "unmark" commands
+                 * as "mark" commands, leading to unintended behaviour.
+                 *
+                 * Task numbers provided by the user are 1-based, while the internal task
+                 * list uses 0-based indexing. Therefore, the parsed task number is
+                 * converted to a 0-based index before accessing the task list.
+                 */
+
+            } else if (input.startsWith("mark")){
+                System.out.println("Nice! I've marked this task as done:");
+                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", ""))-1;
+                tasks.get(taskNumber).markAsDone();
+                System.out.println(tasks.get(taskNumber));
+
             } else {
 
                 /*
@@ -166,7 +194,8 @@ public class Gojo {
                 if (tasks.size() >= 100) {
                     System.out.println("Cannot add more than 100 items");
                 } else {
-                    tasks.add(input);
+                    Task myTask= new Task(input);
+                    tasks.add(myTask);
                     System.out.println("added : " + input);
                 }
 
