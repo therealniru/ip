@@ -119,108 +119,132 @@ public class Gojo {
          * The loop terminates only when the user explicitly enters the "bye" command.
          */
         while (true) {
-
-            System.out.print("You: ");
-            input = sc.nextLine();
-
-            /*
-             * Exit condition.
-             *
-             * When the user enters the "bye" command (case-insensitive),
-             * the loop is terminated and the application proceeds to shutdown.
-             */
-            if (input.toLowerCase().equals("bye")) {
-                break;
+            try {
+                System.out.print("You: ");
+                input = sc.nextLine();
 
                 /*
-                 * List command.
+                 * Exit condition.
                  *
-                 * Displays all currently stored tasks using 1-based indexing.
-                 * Tasks are shown in the order they were added by the user.
+                 * When the user enters the "bye" command (case-insensitive),
+                 * the loop is terminated and the application proceeds to shutdown.
                  */
-            } else if (input.toLowerCase().equals("list")) {
+                if (input.toLowerCase().equals("bye")) {
+                    break;
 
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println((i + 1) + ". " + tasks.get(i));
-                }
+                    /*
+                     * List command.
+                     *
+                     * Displays all currently stored tasks using 1-based indexing.
+                     * Tasks are shown in the order they were added by the user.
+                     */
+                } else if (input.toLowerCase().equals("list")) {
 
-                /*
-                 * Default behavior.
-                 *
-                 * Any input that does not match a recognised command is interpreted
-                 * as a task description and is added to the task list.
-                 */
-            } else if (input.startsWith("unmark")) {
-                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", "")) - 1;
-                tasks.get(taskNumber).markAsNotDone();
-                System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println(tasks.get(taskNumber));
-                // saveData();
+                    System.out.println("Here are the tasks in your list:");
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + ". " + tasks.get(i));
+                    }
 
-            } else if (input.startsWith("mark")) {
-                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", "")) - 1;
-                tasks.get(taskNumber).markAsDone();
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println(tasks.get(taskNumber));
-                // saveData();
-
-            } else if (input.startsWith("todo ")) {
-                if (tasks.size() >= 100) {
-                    System.out.println("Cannot add more than 100 items");
-                } else {
-                    String description = input.substring(5).trim();
-                    Task newTask = new Todo(description);
-                    tasks.add(newTask);
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + newTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    /*
+                     * Default behavior.
+                     *
+                     * Any input that does not match a recognised command is interpreted
+                     * as a task description and is added to the task list.
+                     */
+                } else if (input.startsWith("unmark")) {
+                    int taskNumber = Integer.parseInt(input.replaceAll("\\D+", "")) - 1;
+                    tasks.get(taskNumber).markAsNotDone();
+                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.println(tasks.get(taskNumber));
                     // saveData();
-                }
-            } else if (input.startsWith("deadline ")) {
-                if (tasks.size() >= 100) {
-                    System.out.println("Cannot add more than 100 items");
-                } else {
-                    String[] parts = input.substring(9).split(" /by ");
-                    String description = parts[0].trim();
-                    String by = parts[1].trim();
-                    Task newTask = new Deadline(description, by);
-                    tasks.add(newTask);
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + newTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                    // saveData();
-                }
-            } else if (input.startsWith("event ")) {
-                if (tasks.size() >= 100) {
-                    System.out.println("Cannot add more than 100 items");
-                } else {
-                    String[] parts = input.substring(6).split(" /from ");
-                    String description = parts[0].trim();
-                    String[] timeParts = parts[1].split(" /to ");
-                    String from = timeParts[0].trim();
-                    String to = timeParts[1].trim();
-                    Task newTask = new Event(description, from, to);
-                    tasks.add(newTask);
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + newTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                    // saveData();
-                }
 
-            } else {
-                System.out.println("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                } else if (input.startsWith("mark")) {
+                    int taskNumber = Integer.parseInt(input.replaceAll("\\D+", "")) - 1;
+                    tasks.get(taskNumber).markAsDone();
+                    System.out.println("Nice! I've marked this task as done:");
+                    System.out.println(tasks.get(taskNumber));
+                    // saveData();
+
+                } else if (input.equals("todo") || input.startsWith("todo ")) {
+                    if (tasks.size() >= 100) {
+                        System.out.println("Cannot add more than 100 items");
+                    } else {
+                        if (input.trim().equals("todo")) {
+                            throw new ChatbotExceptions("OOPS!!! The description of a todo cannot be empty.");
+                        }
+                        String description = input.substring(5).trim();
+                        if (description.length() == 0) {
+                            throw new ChatbotExceptions("OOPS!!! The description of a todo cannot be empty.");
+                        }
+                        Task newTask = new Todo(description);
+                        tasks.add(newTask);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + newTask);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                        // saveData();
+                    }
+                } else if (input.equals("deadline") || input.startsWith("deadline ")) {
+                    if (tasks.size() >= 100) {
+                        System.out.println("Cannot add more than 100 items");
+                    } else {
+                        if (input.trim().equals("deadline")) {
+                            throw new ChatbotExceptions("OOPS!!! The description of a deadline cannot be empty.");
+                        }
+                        String[] parts = input.substring(9).split(" /by ");
+                        if (parts.length < 2) {
+                            throw new ChatbotExceptions("OOPS!!! The deadline cannot be empty.");
+                        }
+                        String description = parts[0].trim();
+                        if (description.length() == 0) {
+                            throw new ChatbotExceptions("OOPS!!! The description of a deadline cannot be empty.");
+                        }
+                        String by = parts[1].trim();
+                        Task newTask = new Deadline(description, by);
+                        tasks.add(newTask);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + newTask);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                        // saveData();
+                    }
+                } else if (input.equals("event") || input.startsWith("event ")) {
+                    if (tasks.size() >= 100) {
+                        System.out.println("Cannot add more than 100 items");
+                    } else {
+                        if (input.trim().equals("event")) {
+                            throw new ChatbotExceptions("OOPS!!! The description of a event cannot be empty.");
+                        }
+                        String[] parts = input.substring(6).split(" /from ");
+                        if (parts.length < 2) {
+                            throw new ChatbotExceptions("OOPS!!! The event cannot be empty.");
+                        }
+                        String description = parts[0].trim();
+                        if (description.length() == 0) {
+                            throw new ChatbotExceptions("OOPS!!! The description of a event cannot be empty.");
+                        }
+                        String[] timeParts = parts[1].split(" /to ");
+                        if (timeParts.length < 2) {
+                            throw new ChatbotExceptions("OOPS!!! The event time is missing.");
+                        }
+                        String from = timeParts[0].trim();
+                        String to = timeParts[1].trim();
+                        Task newTask = new Event(description, from, to);
+                        tasks.add(newTask);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + newTask);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                        // saveData();
+                    }
+
+                } else {
+                    throw new ChatbotExceptions("OOPS!!! I'm sorry, but I don't know what that means 😭");
+                }
+            } catch (ChatbotExceptions ce) {
+                System.out.println(ce.getMessage());
             }
             System.out.println("____________________________________________________________");
         }
-
-        /*
-         * Display the farewell message before terminating the application.
-         *
-         * This section executes after the main interaction loop ends and
-         * provides a clean and user-friendly shutdown experience.
-         */
         System.out.println("Bye, until next time - Stay Limitless ♾️");
         System.out.println("____________________________________________________________");
+
     }
 }
