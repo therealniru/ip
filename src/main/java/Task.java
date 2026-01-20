@@ -11,14 +11,20 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
-    public void markAsDone(){
-        isDone=true;
+    public void markAsDone() {
+        isDone = true;
     }
-    public void markAsNotDone(){
-        isDone=false;
+
+    public void markAsNotDone() {
+        isDone = false;
     }
+
     @Override
-    public String toString(){
-        return "["+this.getStatusIcon()+"]" + " " + description;
+    public String toString() {
+        return "[" + this.getStatusIcon() + "]" + " " + description;
+    }
+
+    public String toFileFormat() {
+        return " | " + (isDone ? "1" : "0") + " | " + description;
     }
 }

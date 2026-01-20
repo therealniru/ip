@@ -1,10 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Gojo {
+    private static final String FILE_PATH = "data/gojo.txt";
+    private static List<Task> tasks = new ArrayList<>();
+
     public static void main(String[] args) {
+        // loadData();
         /*
          * Scanner used to read user input from standard input.
          * This serves as the primary input mechanism for the chatbot.
@@ -16,13 +23,11 @@ public class Gojo {
          * Used purely for visual branding and does not affect logic.
          */
 
-        String logo =
-                "  ██████   ██████      ██   ██████  \n"
-                        + " ██        ██   ██     ██   ██    ██ \n"
-                        + " ██  ████  ██   ██     ██   ██    ██ \n"
-                        + " ██    ██  ██   ██     ██   ██    ██ \n"
-                        + "  ██████   ██████   ██ ██    ██████  \n";
-
+        String logo = "  ██████   ██████      ██   ██████  \n"
+                + " ██        ██   ██     ██   ██    ██ \n"
+                + " ██  ████  ██   ██     ██   ██    ██ \n"
+                + " ██    ██  ██   ██     ██   ██    ██ \n"
+                + "  ██████   ██████   ██ ██    ██████  \n";
 
         String gojoFace = """
                 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -80,9 +85,9 @@ public class Gojo {
          * Display the initial greeting, branding, and usage prompt to the user.
          *
          * This section is executed exactly once at program startup and serves to:
-         *  - Introduce the chatbot and its purpose
-         *  - Provide a clear visual separation from user input
-         *  - Establish the tone and personality of the application
+         * - Introduce the chatbot and its purpose
+         * - Provide a clear visual separation from user input
+         * - Establish the tone and personality of the application
          *
          * No user interaction or state modification occurs in this section.
          */
@@ -104,21 +109,12 @@ public class Gojo {
         String input = "";
 
         /*
-         * Stores all user-added tasks during program execution.
-         *
-         * Tasks are maintained entirely in memory and are not persisted to disk.
-         * The list supports a maximum of 100 tasks, as specified by Level 2 requirements.
-         * The order of insertion is preserved to allow sequential listing.
-         */
-        List<Task> tasks = new ArrayList<>();
-
-        /*
          * Main interaction loop of the application.
          *
          * This loop continuously:
-         *  - Prompts the user for input
-         *  - Interprets the input as either a command or a task
-         *  - Updates application state accordingly
+         * - Prompts the user for input
+         * - Interprets the input as either a command or a task
+         * - Updates application state accordingly
          *
          * The loop terminates only when the user explicitly enters the "bye" command.
          */
@@ -144,6 +140,7 @@ public class Gojo {
                  */
             } else if (input.toLowerCase().equals("list")) {
 
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < tasks.size(); i++) {
                     System.out.println((i + 1) + ". " + tasks.get(i));
                 }
@@ -154,57 +151,67 @@ public class Gojo {
                  * Any input that does not match a recognised command is interpreted
                  * as a task description and is added to the task list.
                  */
-            } else if (input.startsWith("unmark")){
-                System.out.println("OK, I've marked this task as not done yet:");
-                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", ""))-1;
+            } else if (input.startsWith("unmark")) {
+                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", "")) - 1;
                 tasks.get(taskNumber).markAsNotDone();
+                System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println(tasks.get(taskNumber));
-                /*
-                 * Handle task status update commands.
-                 *
-                 * This block processes commands that modify the completion status of tasks,
-                 * namely "mark" and "unmark".
-                 *
-                 * IMPORTANT:
-                 * The "unmark" command MUST be checked before the "mark" command.
-                 * This is because the string "unmark" contains the substring "mark".
-                 * Checking "mark" first would incorrectly treat "unmark" commands
-                 * as "mark" commands, leading to unintended behaviour.
-                 *
-                 * Task numbers provided by the user are 1-based, while the internal task
-                 * list uses 0-based indexing. Therefore, the parsed task number is
-                 * converted to a 0-based index before accessing the task list.
-                 */
+                // saveData();
 
-            } else if (input.startsWith("mark")){
-                System.out.println("Nice! I've marked this task as done:");
-                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", ""))-1;
+            } else if (input.startsWith("mark")) {
+                int taskNumber = Integer.parseInt(input.replaceAll("\\D+", "")) - 1;
                 tasks.get(taskNumber).markAsDone();
+                System.out.println("Nice! I've marked this task as done:");
                 System.out.println(tasks.get(taskNumber));
+                // saveData();
 
-            } else {
-
-                /*
-                 * Enforce the maximum task capacity constraint.
-                 *
-                 * The application supports storing up to 100 tasks in memory.
-                 * If the limit is reached, the task is rejected and an error
-                 * message is displayed to the user.
-                 */
+            } else if (input.startsWith("todo ")) {
                 if (tasks.size() >= 100) {
                     System.out.println("Cannot add more than 100 items");
                 } else {
-                    Task myTask= new Task(input);
-                    tasks.add(myTask);
-                    System.out.println("added : " + input);
+                    String description = input.substring(5).trim();
+                    Task newTask = new Todo(description);
+                    tasks.add(newTask);
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  " + newTask);
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    // saveData();
+                }
+            } else if (input.startsWith("deadline ")) {
+                if (tasks.size() >= 100) {
+                    System.out.println("Cannot add more than 100 items");
+                } else {
+                    String[] parts = input.substring(9).split(" /by ");
+                    String description = parts[0].trim();
+                    String by = parts[1].trim();
+                    Task newTask = new Deadline(description, by);
+                    tasks.add(newTask);
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  " + newTask);
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    // saveData();
+                }
+            } else if (input.startsWith("event ")) {
+                if (tasks.size() >= 100) {
+                    System.out.println("Cannot add more than 100 items");
+                } else {
+                    String[] parts = input.substring(6).split(" /from ");
+                    String description = parts[0].trim();
+                    String[] timeParts = parts[1].split(" /to ");
+                    String from = timeParts[0].trim();
+                    String to = timeParts[1].trim();
+                    Task newTask = new Event(description, from, to);
+                    tasks.add(newTask);
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  " + newTask);
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    // saveData();
                 }
 
-                /*
-                 * Print a visual separator after task-related output
-                 * to improve readability of subsequent interactions.
-                 */
-                System.out.println("____________________________________________________________");
+            } else {
+                System.out.println("OOPS!!! I'm sorry, but I don't know what that means :-(");
             }
+            System.out.println("____________________________________________________________");
         }
 
         /*
