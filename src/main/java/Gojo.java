@@ -6,10 +6,24 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * The entry point for the Gojo chatbot application.
+ * Gojo is a CLI-based task manager that helps users track todos, deadlines, and
+ * events.
+ * It supports commands to list, mark, unmark, delete, and add various types of
+ * tasks.
+ */
 public class Gojo {
     private static final String FILE_PATH = "data/gojo.txt";
     private static List<Task> tasks = new ArrayList<>();
 
+    /**
+     * The main method that initializes the chatbot and handles the user input loop.
+     * It displays a welcome message and continuously processes user commands until
+     * "bye" is entered.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         // loadData();
         /*
@@ -137,11 +151,21 @@ public class Gojo {
                 }
 
                 switch (command) {
+                    /*
+                     * Handles the "BYE" command.
+                     * Prints a farewell message to the console and terminates the main method,
+                     * effectively exiting the application.
+                     */
                     case BYE:
                         System.out.println("Bye, until next time - Stay Limitless ♾️");
                         System.out.println("____________________________________________________________");
                         return; // Exit the main method
 
+                    /*
+                     * Handles the "LIST" command.
+                     * Iterates through the list of tasks and prints each one with its index.
+                     * This allows the user to see all current tasks and their status.
+                     */
                     case LIST:
                         System.out.println("Here are the tasks in your list:");
                         for (int i = 0; i < tasks.size(); i++) {
@@ -149,6 +173,13 @@ public class Gojo {
                         }
                         break;
 
+                    /*
+                     * Handles the "UNMARK" command.
+                     * Parses the task number from the user input, validates it, and marks the
+                     * corresponding
+                     * task as not done. If the input is invalid or out of bounds, an exception is
+                     * thrown.
+                     */
                     case UNMARK:
                         if (inputParts.length < 2) {
                             throw new ChatbotExceptions("Please specify a task number to unmark.");
@@ -166,6 +197,11 @@ public class Gojo {
                         }
                         break;
 
+                    /*
+                     * Handles the "MARK" command.
+                     * Similar to UNMARK, but marks the specified task as done.
+                     * It includes validation for the task number integer and array bounds.
+                     */
                     case MARK:
                         if (inputParts.length < 2) {
                             throw new ChatbotExceptions("Please specify a task number to mark.");
@@ -183,6 +219,12 @@ public class Gojo {
                         }
                         break;
 
+                    /*
+                     * Handles the "TODO" command.
+                     * Creates a new Todo task with the provided description.
+                     * Checks if the task list is full (limit 100) and ensures the description is
+                     * not empty.
+                     */
                     case TODO:
                         if (tasks.size() >= 100) {
                             System.out.println("Cannot add more than 100 items");
@@ -200,6 +242,12 @@ public class Gojo {
                         }
                         break;
 
+                    /*
+                     * Handles the "DEADLINE" command.
+                     * Creates a new Deadline task. Requires a description and a deadline time
+                     * (prefixed with /by).
+                     * Validates format and ensures all parts are present before creating the task.
+                     */
                     case DEADLINE:
                         if (tasks.size() >= 100) {
                             System.out.println("Cannot add more than 100 items");
@@ -225,6 +273,13 @@ public class Gojo {
                         }
                         break;
 
+                    /*
+                     * Handles the "EVENT" command.
+                     * Creates a new Event task. Requires description, start time (/from), and end
+                     * time (/to).
+                     * Performs validation to ensure proper formatting and existence of all
+                     * components.
+                     */
                     case EVENT:
                         if (tasks.size() >= 100) {
                             System.out.println("Cannot add more than 100 items");
@@ -255,6 +310,11 @@ public class Gojo {
                         }
                         break;
 
+                    /*
+                     * Handles the "DELETE" command.
+                     * Removes a task from the list based on the provided index.
+                     * Validates that the index is within the valid range of existing tasks.
+                     */
                     case DELETE:
                         if (inputParts.length < 2) {
                             throw new ChatbotExceptions("Please specify a task number to delete.");
@@ -275,6 +335,8 @@ public class Gojo {
                         break;
                 }
             } catch (ChatbotExceptions ce) {
+                // Catches and displays any application-specific exceptions thrown during
+                // command execution.
                 System.out.println(ce.getMessage());
             }
             System.out.println("____________________________________________________________");
