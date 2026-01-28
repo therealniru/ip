@@ -1,6 +1,10 @@
 
 package gojo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * The entry point for the gojo.Gojo chatbot application.
  * gojo.Gojo is a CLI-based task manager that helps users track todos,
@@ -21,7 +25,7 @@ public class Gojo {
     private TaskList tasks;
 
     // The user interface handler for input and output.
-    private Ui ui;
+    private UI ui;
 
     // The storage handler for loading and saving tasks tasks to/from the hard disk.
     private Storage storage;
@@ -32,16 +36,10 @@ public class Gojo {
      * If loading fails, it starts with an empty task list.
      */
     public Gojo() {
-        ui = new Ui();
+        ui = new UI();
         storage = new Storage(FILE_PATH);
-        try {
-            // Attempt to load tasks from the defined file path
-            tasks = new TaskList(storage.load());
-        } catch (ChatbotExceptions e) {
-            // If loading fails (e.g., file corruption), show error and start fresh
-            ui.showLoadingError();
-            tasks = new TaskList();
-        }
+        // Attempt to load tasks from the defined file path
+        tasks = new TaskList(storage.load());
     }
 
     /**
@@ -202,6 +200,47 @@ public class Gojo {
                         ui.showMessage("  " + removedTask);
                         ui.showMessage("Now you have " + tasks.size() + " tasks in the list.");
                         storage.save(tasks.getAllTasks());
+                        break;
+
+                    case SCHEDULE:
+                        // Lists tasks scheduled for a specific date
+                        if (arguments.isEmpty()) {
+                            throw new ChatbotExceptions("Please specify a date to view the schedule.");
+                        }
+
+                        // Parse the date argument
+                        LocalDateTime scheduleDate = DateParser.parseDateTime(arguments);
+                        LocalDate queryDate = scheduleDate.toLocalDate();
+
+                        ui.showMessage(
+                                "Tasks for " + queryDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ":");
+
+                        boolean found = false;
+                        for (Task t : tasks.getAllTasks()) {
+                            if (t instanceof Deadline) {
+                                Deadline d = (Deadline) t;
+                                if (d.by.toLocalDate().equals(queryDate)) {
+                                    ui.showMessage("  [D] " + d.description + " (due: "
+                                            + DateParser.formatDateTime(d.by) + ")");
+                                    found = true;
+                                }
+                            } else if (t instanceof Event) {
+                                Event e = (Event) t;
+                                LocalDate startDate = e.from.toLocalDate();
+                                LocalDate endDate = e.to.toLocalDate();
+                                // Check if queryDate is within [startDate, endDate]
+                                if (!queryDate.isBefore(startDate) && !queryDate.isAfter(endDate)) {
+                                    ui.showMessage(
+                                            "  [E] " + e.description + " (from: " + DateParser.formatDateTime(e.from)
+                                                    + " to: " + DateParser.formatDateTime(e.to) + ")");
+                                    found = true;
+                                }
+                            }
+                        }
+
+                        if (!found) {
+                            ui.showMessage("  No tasks scheduled for this date.");
+                        }
                         break;
                 }
             } catch (ChatbotExceptions ce) {

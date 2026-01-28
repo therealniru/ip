@@ -32,7 +32,7 @@ public class Storage {
      * @return The list of tasks loaded from the file.
      * @throws ChatbotExceptions If there are errors accessing or reading the file.
      */
-    public List<Task> load() throws ChatbotExceptions {
+    public List<Task> load() {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
         try {
@@ -82,17 +82,12 @@ public class Storage {
                         tasks.add(task);
                     }
                 } catch (Exception e) {
-                    // Ignore corrupted lines or print to console if needed
-                    // For now, we just skip them as per original logic's print
-                    // But in Storage class we might not want to print to SysOut directly?
-                    // Original code: System.out.println("Skipping corrupted line: " + line);
-                    // We can keep it or leave it. To keep behavior identical, we print.
                     System.out.println("Skipping corrupted line: " + line);
                 }
             }
             fileScanner.close();
         } catch (IOException e) {
-            throw new ChatbotExceptions("Error loading data from file: " + e.getMessage());
+            System.out.println("Error loading data from file: " + e.getMessage());
         }
         return tasks;
     }

@@ -1,56 +1,50 @@
 package gojo;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.LocalDateTime;
 
 /**
  * Represents a task with a deadline in the gojo.Gojo application.
- * A deadline task has a description and a specific date by which it must
+ * A deadline task has a description and a specific date and time by which it
+ * must
  * be completed.
  */
 public class Deadline extends Task {
 
-    /** The deadline date for the task. */
-    protected LocalDate by;
+    /** The deadline date and time for the task. */
+    protected LocalDateTime by;
 
     /**
      * Constructs a new gojo.Deadline task.
      *
      * @param description The description of the task.
-     * @param by          The deadline date in yyyy-MM-dd format.
+     * @param by          The deadline date string (e.g., "2/12/2019 1800",
+     *                    "tomorrow").
      * @throws ChatbotExceptions If the date format is invalid.
      */
     public Deadline(String description, String by) throws ChatbotExceptions {
         super(description);
-        try {
-            // Parse the date string into a LocalDate object
-            this.by = LocalDate.parse(by);
-        } catch (DateTimeParseException e) {
-            // Throw custom exception if date parsing fails
-            throw new ChatbotExceptions("OOPS!!! Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-02).");
-        }
+        this.by = DateParser.parseDateTime(by);
     }
 
     /**
      * Returns a string representation of the deadline task.
-     * The format is "[D][Status] Description (by: MMM d yyyy)".
+     * The format is "[D][Status] Description (by: MMM d yyyy HH:mm)".
      *
      * @return The string representation of the deadline task.
      */
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return "[D]" + super.toString() + " (by: " + DateParser.formatDateTime(by) + ")";
     }
 
     /**
      * Formats the deadline task data for file storage.
-     * The format is "D | Status | Description | yyyy-MM-dd".
+     * The format is "D | Status | Description | yyyy-MM-dd HHmm".
      *
      * @return A formatted string suitable for saving to a file.
      */
     @Override
     public String toFileFormat() {
-        return "D" + super.toFileFormat() + " | " + by;
+        return "D" + super.toFileFormat() + " | " + DateParser.toFileString(by);
     }
 }

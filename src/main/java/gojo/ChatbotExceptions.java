@@ -14,6 +14,7 @@ public class ChatbotExceptions extends Exception {
      * @param message The detail message explaining the reason for the exception.
      */
     public ChatbotExceptions(String message) {
+
         super(message);
     }
 }

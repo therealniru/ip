@@ -1,5 +1,7 @@
 package gojo;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents an event task in the Gojo application.
  * An event task has a description and occurs within a specific time range
@@ -8,22 +10,24 @@ package gojo;
 public class Event extends Task {
 
     /** The start time of the event. */
-    protected String from;
+    protected LocalDateTime from;
 
     /** The end time of the event. */
-    protected String to;
+    protected LocalDateTime to;
 
     /**
      * Constructs a new Event task.
      *
      * @param description The description of the event.
-     * @param from        The start time of the event.
+     * @param from        The start time of the event (e.g., "2/12/2019 1400",
+     *                    "tomorrow").
      * @param to          The end time of the event.
+     * @throws ChatbotExceptions If the date format is invalid.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String to) throws ChatbotExceptions {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.from = DateParser.parseDateTime(from);
+        this.to = DateParser.parseDateTime(to);
     }
 
     /**
@@ -34,7 +38,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + super.toString() + " (from: " + DateParser.formatDateTime(from) + " to: "
+                + DateParser.formatDateTime(to) + ")";
     }
 
     /**
@@ -45,6 +50,6 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "E" + super.toFileFormat() + " | " + from + " | " + to;
+        return "E" + super.toFileFormat() + " | " + DateParser.toFileString(from) + " | " + DateParser.toFileString(to);
     }
 }

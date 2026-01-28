@@ -20,6 +20,8 @@ public enum Command {
     DEADLINE,
     /** Adds a new Event task. */
     EVENT,
+    /** Lists tasks scheduled for a specific date. */
+    SCHEDULE,
     /** Deletes a specific task. */
     DELETE
 }

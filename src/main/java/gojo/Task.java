@@ -6,7 +6,7 @@ package gojo;
  * It serves as the base class for more specific task types like Todo, Deadline,
  * and Event.
  */
-public class Task {
+public abstract class Task {
     /** The description of the task. */
     protected String description;
 

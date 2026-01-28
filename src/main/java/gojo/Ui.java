@@ -12,7 +12,7 @@ import java.util.Scanner;
  * GUI).
  * </p>
  */
-public class Ui {
+public class UI {
     private final Scanner sc;
     private static final String LINE_SEPARATOR = "____________________________________________________________";
 
@@ -20,7 +20,7 @@ public class Ui {
      * Constructs a new Ui instance.
      * Initializes the Scanner to read from standard input (keyboard).
      */
-    public Ui() {
+    public UI() {
         this.sc = new Scanner(System.in);
     }
 
