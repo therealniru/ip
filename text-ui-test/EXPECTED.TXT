@@ -58,7 +58,7 @@ Hello from:
   ██████   ██████   ██ ██    ██████  
 
 ____________________________________________________________
-Hey! I'm Gojo 🤞🏻.
+Hey! I'm gojo 🤞🏻.
 Consider this your domain of organisation.
 What would you like to do?
 ____________________________________________________________
@@ -69,7 +69,7 @@ You: Got it. I've added this task:
 Now you have 1 tasks in the list.
 ____________________________________________________________
 You: Got it. I've added this task:
-  [D][ ] return book (by: June 6th)
+  [D][ ] return book (by: Jun 6 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 You: Got it. I've added this task:
@@ -78,7 +78,7 @@ Now you have 3 tasks in the list.
 ____________________________________________________________
 You: Here are the tasks in your list:
 1. [T][ ] read book
-2. [D][ ] return book (by: June 6th)
+2. [D][ ] return book (by: Jun 6 2019)
 3. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
 You: Noted. I've removed this task:
@@ -86,7 +86,7 @@ You: Noted. I've removed this task:
 Now you have 2 tasks in the list.
 ____________________________________________________________
 You: Here are the tasks in your list:
-1. [D][ ] return book (by: June 6th)
+1. [D][ ] return book (by: Jun 6 2019)
 2. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
 You: OOPS!!! The task number is out of bounds.
@@ -96,7 +96,7 @@ ____________________________________________________________
 You: Please specify a task number to delete.
 ____________________________________________________________
 You: Here are the tasks in your list:
-1. [D][ ] return book (by: June 6th)
+1. [D][ ] return book (by: Jun 6 2019)
 2. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
 You: Bye, until next time - Stay Limitless ♾️

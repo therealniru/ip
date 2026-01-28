@@ -1,5 +1,7 @@
+package gojo;
+
 /**
- * Represents the valid commands that can be issued to the Gojo chatbot.
+ * Represents the valid commands that can be issued to the gojo.Gojo chatbot.
  * These commands control the various operations such as adding tasks,
  * listing tasks, marking tasks as done/undone, deleting tasks, and exiting.
  */

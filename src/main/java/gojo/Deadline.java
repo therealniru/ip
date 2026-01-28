@@ -1,9 +1,11 @@
+package gojo;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents a task with a deadline in the Gojo application.
+ * Represents a task with a deadline in the gojo.Gojo application.
  * A deadline task has a description and a specific date by which it must
  * be completed.
  */
@@ -13,7 +15,7 @@ public class Deadline extends Task {
     protected LocalDate by;
 
     /**
-     * Constructs a new Deadline task.
+     * Constructs a new gojo.Deadline task.
      *
      * @param description The description of the task.
      * @param by          The deadline date in yyyy-MM-dd format.
@@ -22,8 +24,10 @@ public class Deadline extends Task {
     public Deadline(String description, String by) throws ChatbotExceptions {
         super(description);
         try {
+            // Parse the date string into a LocalDate object
             this.by = LocalDate.parse(by);
         } catch (DateTimeParseException e) {
+            // Throw custom exception if date parsing fails
             throw new ChatbotExceptions("OOPS!!! Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-02).");
         }
     }

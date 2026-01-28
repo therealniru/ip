@@ -1,3 +1,5 @@
+package gojo;
+
 /**
  * Represents a todo task in the Gojo application.
  * A todo task is a simple task with a description and no specific deadline or

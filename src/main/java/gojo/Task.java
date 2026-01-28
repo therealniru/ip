@@ -1,3 +1,5 @@
+package gojo;
+
 /**
  * Represents a generic task in the Gojo application.
  * A task has a description and a completion status.

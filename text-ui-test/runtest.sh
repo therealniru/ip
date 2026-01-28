@@ -12,8 +12,13 @@ then
     rm ACTUAL.TXT
 fi
 
+if [ -d "./data" ]
+then
+    rm -rf ./data
+fi
+
 # compile the code into the bin folder
-javac  -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/*.java
+javac  -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/gojo/*.java
 if [ $? -eq 0 ]
 then
     echo "========= COMPILATION SUCCESS ========="
@@ -23,7 +28,7 @@ else
 fi
 
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin Gojo < input.txt > ACTUAL.TXT
+java -classpath ../bin gojo.Gojo < input.txt > ACTUAL.TXT
 
 # compare the output to the expected output
 diff ACTUAL.TXT EXPECTED.TXT

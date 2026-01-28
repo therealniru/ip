@@ -1,4 +1,6 @@
 T | 1 | read book
-D | 1 | return book | June 6th
 E | 1 | project meeting | Aug 6th 2pm | 4pm
 T | 0 | borrow book
+D | 0 | return book | 2019-12-02
+E | 0 | meeting | 2019-12-01 | 2019-12-02
+T | 0 | byt bread
