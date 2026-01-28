@@ -8,6 +8,11 @@ package gojo;
  * </p>
  */
 public class Parser {
+    /**
+     * Private constructor to prevent instantiation of utility class.
+     */
+    private Parser() {
+    }
 
     /**
      * Parses the command word from the user input.

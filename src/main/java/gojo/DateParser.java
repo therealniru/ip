@@ -17,6 +17,11 @@ import java.util.List;
  * like "today" and "tomorrow".
  */
 public class DateParser {
+    /**
+     * Private constructor to prevent instantiation of utility class.
+     */
+    private DateParser() {
+    }
 
     // List of supported date-time formats
     private static final List<String> DATE_TIME_FORMATS = Arrays.asList(

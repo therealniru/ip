@@ -18,6 +18,11 @@ import java.util.Scanner;
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a new Storage instance.
+     *
+     * @param filePath The file path where tasks will be stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
@@ -30,7 +35,6 @@ public class Storage {
      * </p>
      *
      * @return The list of tasks loaded from the file.
-     * @throws ChatbotExceptions If there are errors accessing or reading the file.
      */
     public List<Task> load() {
         List<Task> tasks = new ArrayList<>();
