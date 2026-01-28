@@ -25,7 +25,7 @@ public class Gojo {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        // loadData();
+        loadData();
         /*
          * Scanner used to read user input from standard input.
          * This serves as the primary input mechanism for the chatbot.
@@ -189,7 +189,7 @@ public class Gojo {
                             tasks.get(taskNumber).markAsNotDone();
                             System.out.println("OK, I've marked this task as not done yet:");
                             System.out.println(tasks.get(taskNumber));
-                            // saveData();
+                            saveData();
                         } catch (NumberFormatException e) {
                             throw new ChatbotExceptions("OOPS!!! The task number must be an integer.");
                         } catch (IndexOutOfBoundsException e) {
@@ -211,7 +211,7 @@ public class Gojo {
                             tasks.get(taskNumber).markAsDone();
                             System.out.println("Nice! I've marked this task as done:");
                             System.out.println(tasks.get(taskNumber));
-                            // saveData();
+                            saveData();
                         } catch (NumberFormatException e) {
                             throw new ChatbotExceptions("OOPS!!! The task number must be an integer.");
                         } catch (IndexOutOfBoundsException e) {
@@ -238,7 +238,7 @@ public class Gojo {
                             System.out.println("Got it. I've added this task:");
                             System.out.println("  " + newTask);
                             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                            // saveData();
+                            saveData();
                         }
                         break;
 
@@ -269,7 +269,7 @@ public class Gojo {
                             System.out.println("Got it. I've added this task:");
                             System.out.println("  " + newTask);
                             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                            // saveData();
+                            saveData();
                         }
                         break;
 
@@ -306,7 +306,7 @@ public class Gojo {
                             System.out.println("Got it. I've added this task:");
                             System.out.println("  " + newTask);
                             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                            // saveData();
+                            saveData();
                         }
                         break;
 
@@ -329,6 +329,7 @@ public class Gojo {
                             System.out.println("Noted. I've removed this task:");
                             System.out.println("  " + removedTask);
                             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                            saveData();
                         } catch (NumberFormatException e) {
                             throw new ChatbotExceptions("OOPS!!! The task number must be an integer.");
                         }
@@ -340,6 +341,77 @@ public class Gojo {
                 System.out.println(ce.getMessage());
             }
             System.out.println("____________________________________________________________");
+        }
+    }
+
+    /**
+     * Loads tasks from the data file on startup.
+     * Handles file creation if it doesn't exist and parses existing data.
+     */
+    private static void loadData() {
+        File file = new File(FILE_PATH);
+        try {
+            if (!file.exists()) {
+                File directory = file.getParentFile();
+                if (directory != null && !directory.exists()) {
+                    directory.mkdirs();
+                }
+                return;
+            }
+
+            Scanner fileScanner = new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                try {
+                    String[] parts = line.split(" \\| ");
+                    String type = parts[0];
+                    boolean isDone = parts[1].equals("1");
+                    String description = parts[2];
+
+                    Task task = null;
+                    switch (type) {
+                        case "T":
+                            task = new Todo(description);
+                            break;
+                        case "D":
+                            String by = parts[3];
+                            task = new Deadline(description, by);
+                            break;
+                        case "E":
+                            String from = parts[3];
+                            String to = parts[4];
+                            task = new Event(description, from, to);
+                            break;
+                    }
+
+                    if (task != null) {
+                        if (isDone) {
+                            task.markAsDone();
+                        }
+                        tasks.add(task);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Skipping corrupted line: " + line);
+                }
+            }
+            fileScanner.close();
+        } catch (IOException e) {
+            System.out.println("Error loading data: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Saves the current list of tasks to the data file.
+     */
+    private static void saveData() {
+        try {
+            FileWriter writer = new FileWriter(FILE_PATH);
+            for (Task task : tasks) {
+                writer.write(task.toFileFormat() + System.lineSeparator());
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving data: " + e.getMessage());
         }
     }
 }
