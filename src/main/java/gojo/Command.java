@@ -22,6 +22,8 @@ public enum Command {
     EVENT,
     /** Lists tasks scheduled for a specific date. */
     SCHEDULE,
+    /** Finds tasks matching a keyword. */
+    FIND,
     /** Deletes a specific task. */
     DELETE
 }

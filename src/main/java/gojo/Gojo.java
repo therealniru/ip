@@ -4,6 +4,7 @@ package gojo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * The entry point for the gojo.Gojo chatbot application.
@@ -240,6 +241,25 @@ public class Gojo {
 
                         if (!found) {
                             ui.showMessage("  No tasks scheduled for this date.");
+                        }
+                        break;
+
+                    case FIND:
+                        // Finds tasks by keyword
+                        if (arguments.isEmpty()) {
+                            throw new ChatbotExceptions("Please specify a keyword to search for.");
+                        }
+                        String keyword = arguments.trim();
+                        List<Task> matchingTasks = tasks.findTasks(keyword);
+
+                        if (matchingTasks.isEmpty()) {
+                            throw new ChatbotExceptions("No tasks matching '" + keyword + "' found.");
+                        }
+
+                        ui.showMessage("Here are the matching tasks in your list:");
+                        for (int i = 0; i < matchingTasks.size(); i++) {
+                            // Display 1-based index and task details
+                            ui.showMessage((i + 1) + "." + matchingTasks.get(i));
                         }
                         break;
                 }
