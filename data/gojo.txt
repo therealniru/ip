@@ -10,3 +10,5 @@ T | 0 | by by
 T | 0 | read book
 T | 0 | return book
 T | 0 | gym
+T | 0 | gym 2
+T | 0 | gym 3

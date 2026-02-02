@@ -5,5 +5,6 @@
             "path": "/Users/niranjanvijay/Library/Java/JavaVirtualMachines/azul-17.0.17/Contents/Home",
             "default": true
         }
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

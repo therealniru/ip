@@ -23,7 +23,7 @@ public class TaskList {
 
     /**
      * Constructs a TaskList with an existing list of tasks.
-     * 
+     *
      * @param tasks The initial list of tasks.
      */
     public TaskList(List<Task> tasks) {
@@ -32,7 +32,7 @@ public class TaskList {
 
     /**
      * Adds a task to the list.
-     * 
+     *
      * @param task The task to add.
      */
     public void add(Task task) {
@@ -41,7 +41,7 @@ public class TaskList {
 
     /**
      * Removes a task from the list at the specified index.
-     * 
+     *
      * @param index The zero-based index of the task to remove.
      * @return The removed task.
      * @throws ChatbotExceptions If the index is out of bounds (less than 0 or >=
@@ -56,7 +56,7 @@ public class TaskList {
 
     /**
      * Retrieves a task from the list at the specified index.
-     * 
+     *
      * @param index The zero-based index of the task so retrieve.
      * @return The task at the specified index.
      * @throws ChatbotExceptions If the index is out of bounds.
@@ -70,7 +70,7 @@ public class TaskList {
 
     /**
      * Returns the number of tasks in the list.
-     * 
+     *
      * @return The size of the task list.
      */
     public int size() {
@@ -80,7 +80,7 @@ public class TaskList {
     /**
      * Returns the underlying list of tasks.
      * Useful for Storage to save data.
-     * 
+     *
      * @return The list of tasks.
      */
     public List<Task> getAllTasks() {

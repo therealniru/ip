@@ -13,9 +13,8 @@ import java.util.Scanner;
  * </p>
  */
 public class UI {
-    private final Scanner sc;
     private static final String LINE_SEPARATOR = "____________________________________________________________";
-
+    private final Scanner sc;
     /**
      * Constructs a new Ui instance.
      * Initializes the Scanner to read from standard input (keyboard).
@@ -106,7 +105,7 @@ public class UI {
      * <p>
      * Prints a prompt "You: " and waits for the user to type a line of text.
      * </p>
-     * 
+     *
      * @return The user specified command string.
      */
     public String readCommand() {
@@ -125,7 +124,7 @@ public class UI {
 
     /**
      * Prints a general message to the user.
-     * 
+     *
      * @param message The message to show.
      */
     public void showMessage(String message) {
@@ -134,7 +133,7 @@ public class UI {
 
     /**
      * Prints an error message.
-     * 
+     *
      * @param message The error message to show.
      */
     public void showError(String message) {

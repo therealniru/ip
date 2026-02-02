@@ -9,10 +9,14 @@ import java.time.LocalDateTime;
  */
 public class Event extends Task {
 
-    /** The start time of the event. */
+    /**
+     * The start time of the event.
+     */
     protected LocalDateTime from;
 
-    /** The end time of the event. */
+    /**
+     * The end time of the event.
+     */
     protected LocalDateTime to;
 
     /**

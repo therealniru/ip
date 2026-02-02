@@ -7,10 +7,14 @@ package gojo;
  * and Event.
  */
 public abstract class Task {
-    /** The description of the task. */
+    /**
+     * The description of the task.
+     */
     protected String description;
 
-    /** The completion status of the task (true if done, false otherwise). */
+    /**
+     * The completion status of the task (true if done, false otherwise).
+     */
     protected boolean isDone;
 
     /**

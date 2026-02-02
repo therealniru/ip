@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,27 +19,25 @@ public class DateParser {
     /**
      * Private constructor to prevent instantiation of utility class.
      */
-    private DateParser() {
-    }
-
     // List of supported date-time formats
     private static final List<String> DATE_TIME_FORMATS = Arrays.asList(
             "d/M/yyyy HHmm",
             "yyyy-MM-dd HHmm",
-            "d-M-yyyy HHmm",
-            "dd MMM yyyy HH:mm" // For parity if needed
-    );
+            "d-M-yyyy HHmm"
+    ); // For parity if needed
 
     // List of supported date-only formats (default time will be set)
+
     private static final List<String> DATE_ONLY_FORMATS = Arrays.asList(
             "d/M/yyyy",
             "yyyy-MM-dd",
             "d-M-yyyy",
-            "MMM d yyyy");
+            "MMM d yyyy"
+    );
 
     /**
      * Parses a string input into a LocalDateTime object.
-     * 
+     *
      * @param input The date string to parse.
      * @return The parsed LocalDateTime object.
      * @throws ChatbotExceptions If the input cannot be parsed into a valid
@@ -52,10 +49,10 @@ public class DateParser {
         // Handle keywords
         if (trimmedInput.equals("today")) {
             return LocalDateTime.now().with(LocalTime.MAX); // End of today? Or maybe start? Let's say 23:59 for
-                                                            // deadlines
+
         } else if (trimmedInput.equals("tomorrow")) {
             return LocalDateTime.now().plusDays(1).with(LocalTime.MAX);
-        }
+        } // deadlines
 
         // Try parsing with time
         // Try parsing with time
@@ -80,13 +77,12 @@ public class DateParser {
             }
         }
 
-        throw new ChatbotExceptions(
-                "OOPS!!! Invalid date format. Please use d/M/yyyy HHmm (e.g., 2/12/2019 1800) or 'today'/'tomorrow'.");
+        throw new ChatbotExceptions("OOPS!!! Invalid date format. Please use d/M/yyyy HHmm or 'today'/'tomorrow'.");
     }
 
     /**
      * Formats a LocalDateTime object into a user-friendly string.
-     * 
+     *
      * @param dateTime The LocalDateTime object to format.
      * @return A formatted string (e.g., "MMM d yyyy HH:mm").
      */
@@ -96,7 +92,7 @@ public class DateParser {
 
     /**
      * Formats a LocalDateTime object for file storage.
-     * 
+     *
      * @param dateTime The LocalDateTime object to format.
      * @return A formatted string (ISO-8601 like pattern preferred for stability).
      */

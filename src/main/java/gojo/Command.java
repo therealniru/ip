@@ -6,24 +6,44 @@ package gojo;
  * listing tasks, marking tasks as done/undone, deleting tasks, and exiting.
  */
 public enum Command {
-    /** Terminates the application. */
+    /**
+     * Terminates the application.
+     */
     BYE,
-    /** Lists all currently tracked tasks. */
+    /**
+     * Lists all currently tracked tasks.
+     */
     LIST,
-    /** Marks a specific task as done. */
+    /**
+     * Marks a specific task as done.
+     */
     MARK,
-    /** Marks a specific task as not done. */
+    /**
+     * Marks a specific task as not done.
+     */
     UNMARK,
-    /** Adds a new Todo task. */
+    /**
+     * Adds a new Todo task.
+     */
     TODO,
-    /** Adds a new Deadline task. */
+    /**
+     * Adds a new Deadline task.
+     */
     DEADLINE,
-    /** Adds a new Event task. */
+    /**
+     * Adds a new Event task.
+     */
     EVENT,
-    /** Lists tasks scheduled for a specific date. */
+    /**
+     * Lists tasks scheduled for a specific date.
+     */
     SCHEDULE,
-    /** Finds tasks matching a keyword. */
+    /**
+     * Finds tasks matching a keyword.
+     */
     FIND,
-    /** Deletes a specific task. */
+    /**
+     * Deletes a specific task.
+     */
     DELETE
 }
