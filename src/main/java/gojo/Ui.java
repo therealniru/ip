@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class UI {
     private static final String LINE_SEPARATOR = "____________________________________________________________";
     private final Scanner sc;
+
     /**
      * Constructs a new Ui instance.
      * Initializes the Scanner to read from standard input (keyboard).
@@ -123,21 +124,25 @@ public class UI {
     }
 
     /**
-     * Prints a general message to the user.
+     * Prints a general message or multiple messages to the user.
      *
-     * @param message The message to show.
+     * @param messages The message(s) to show.
      */
-    public void showMessage(String message) {
-        System.out.println(message);
+    public void showMessage(String... messages) {
+        for (String message : messages) {
+            System.out.println(message);
+        }
     }
 
     /**
-     * Prints an error message.
+     * Prints an error message or multiple error messages.
      *
-     * @param message The error message to show.
+     * @param messages The error message(s) to show.
      */
-    public void showError(String message) {
-        System.out.println(message);
+    public void showError(String... messages) {
+        for (String message : messages) {
+            System.out.println(message);
+        }
     }
 
     /**
