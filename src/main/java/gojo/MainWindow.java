@@ -16,12 +16,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-
 /**
  * Controller for MainWindow. Provides the layout for the other controls.
  */
 public class MainWindow extends AnchorPane {
     private static final int FONT_SIZE = 14;
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -45,6 +46,10 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        // Bind canvas size to main pane size
+        matrixCanvas.widthProperty().bind(mainPane.widthProperty());
+        matrixCanvas.heightProperty().bind(mainPane.heightProperty());
 
         // Initialize drops array for Matrix effect
         int columns = (int) (matrixCanvas.getWidth() / FONT_SIZE);

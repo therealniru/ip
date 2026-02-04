@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
 import javafx.scene.shape.Circle;
 
 /**
@@ -60,7 +59,7 @@ public class DialogBox extends HBox {
 
     /**
      * Sets the style of the dialog box.
-     * 
+     *
      * @param styleType The style class to add.
      */
     public void changeDialogStyle(String styleType) {
