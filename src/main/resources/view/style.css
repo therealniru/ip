@@ -5,7 +5,7 @@
 
 /* The Chat Area - slightly lighter to differentiate */
 .scroll-pane {
-    -fx-background: #121212;
+    -fx-background: transparent;
     -fx-background-color: transparent;
 }
 

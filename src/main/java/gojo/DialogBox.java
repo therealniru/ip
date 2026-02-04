@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import javafx.scene.shape.Circle;
+
 /**
  * An example of a custom control using FXML.
  * This control represents a dialog box consisting of an ImageView to represent
@@ -38,6 +40,11 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+
+        // Circular clip for the profile picture
+        // Assuming fitWidth/fitHeight are set to 99 in FXML, radius is roughly 49.5
+        Circle clip = new Circle(49.5, 49.5, 49.5);
+        displayPicture.setClip(clip);
     }
 
     /**
