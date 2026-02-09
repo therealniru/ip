@@ -31,11 +31,41 @@ public class Parser {
     public static Command parseCommand(String fullCommand) throws ChatbotExceptions {
         // Split input into command word and the rest
         String[] parts = fullCommand.trim().split(" ", 2);
-        String commandStr = parts[0].toUpperCase();
-        try {
-            return Command.valueOf(commandStr);
-        } catch (IllegalArgumentException e) {
-            throw new ChatbotExceptions(MSG_UNKNOWN_COMMAND);
+        String commandWord = parts[0].toLowerCase();
+
+        switch (commandWord) {
+            case "bye":
+            case "b":
+            case "quit":
+                return Command.BYE;
+            case "list":
+            case "l":
+                return Command.LIST;
+            case "mark":
+            case "m":
+                return Command.MARK;
+            case "unmark":
+            case "u":
+                return Command.UNMARK;
+            case "todo":
+            case "t":
+                return Command.TODO;
+            case "deadline":
+            case "d":
+                return Command.DEADLINE;
+            case "event":
+            case "e":
+                return Command.EVENT;
+            case "delete":
+            case "del":
+            case "-":
+                return Command.DELETE;
+            case "schedule":
+                return Command.SCHEDULE;
+            case "find":
+                return Command.FIND;
+            default:
+                throw new ChatbotExceptions(MSG_UNKNOWN_COMMAND);
         }
     }
 

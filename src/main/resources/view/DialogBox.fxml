@@ -18,15 +18,15 @@
         <Label
                 fx:id="dialog"
                 wrapText="true"
-                textOverrun="CLIP"
                 textOverrun="CLIP" />
+
 
         <!-- Profile picture -->
         <ImageView
                 fx:id="displayPicture"
                 fitWidth="99"
                 fitHeight="99"
-                preserveRatio="true" />
+                preserveRatio="false" />
 
     </children>
 
