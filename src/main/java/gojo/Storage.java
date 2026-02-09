@@ -53,8 +53,39 @@ public class Storage {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 try {
-                    Task task = parseTaskFromLine(line);
+                    // Split the line by " | " to extract task details
+                    // Format: Type | IsDone | Description [| Date/Time]
+                    String[] parts = line.split(" \\| ");
+                    String type = parts[0];
+                    boolean isDone = parts[1].equals("1");
+                    String description = parts[2];
+
+                    Task task = null;
+                    // Determine task type and create appropriate object
+                    switch (type) {
+                        case "T":
+                            task = new Todo(description);
+                            break;
+                        case "D":
+                            // Deadline format includes additional "by" date
+                            String by = parts[3];
+                            task = new Deadline(description, by);
+                            break;
+                        case "E":
+                            // Event format includes additional "from" and "to" times
+                            String from = parts[3];
+                            String to = parts[4];
+                            task = new Event(description, from, to);
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + type);
+
+                    }
+
                     if (task != null) {
+                        if (isDone) {
+                            task.markAsDone();
+                        }
                         tasks.add(task);
                     }
                 } catch (Exception e) {
@@ -66,41 +97,6 @@ public class Storage {
             System.out.println("Error loading data from file: " + e.getMessage());
         }
         return tasks;
-    }
-
-    private Task parseTaskFromLine(String line) throws ChatbotExceptions {
-        // Split the line by " | " to extract task details
-        // Format: Type | IsDone | Description [| Date/Time]
-        String[] parts = line.split(" \\| ");
-        String type = parts[0];
-        boolean isDone = parts[1].equals("1");
-        String description = parts[2];
-
-        Task task = null;
-        // Determine task type and create appropriate object
-        switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                // Deadline format includes additional "by" date
-                String by = parts[3];
-                task = new Deadline(description, by);
-                break;
-            case "E":
-                // Event format includes additional "from" and "to" times
-                String from = parts[3];
-                String to = parts[4];
-                task = new Event(description, from, to);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
-        }
-
-        if (task != null && isDone) {
-            task.markAsDone();
-        }
-        return task;
     }
 
     /**
@@ -115,12 +111,17 @@ public class Storage {
     public void save(List<Task> tasks) throws ChatbotExceptions {
         try {
             FileWriter writer = new FileWriter(filePath);
-            for (Task task : tasks) {
-                // Convert each task to its file storage format string
-                writer.write(task.toFileFormat() + System.lineSeparator());
-            }
+            tasks.stream()
+                    .map(task -> task.toFileFormat() + System.lineSeparator())
+                    .forEach(line -> {
+                        try {
+                            writer.write(line);
+                        } catch (IOException e) {
+                            throw new java.io.UncheckedIOException(e);
+                        }
+                    });
             writer.close();
-        } catch (IOException e) {
+        } catch (IOException | java.io.UncheckedIOException e) {
             throw new ChatbotExceptions("Error saving data: " + e.getMessage());
         }
     }
