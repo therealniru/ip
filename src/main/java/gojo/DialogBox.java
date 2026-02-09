@@ -38,6 +38,13 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
+        dialog.setWrapText(true);
+        dialog.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
+        dialog.setMaxWidth(420.0);
+        dialog.setPrefWidth(420.0);
+        dialog.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
+        HBox.setHgrow(dialog, javafx.scene.layout.Priority.ALWAYS);
+
         displayPicture.setImage(img);
 
         // Circular clip for the profile picture

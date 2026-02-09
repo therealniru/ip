@@ -22,7 +22,6 @@ public class Gojo {
     // Path to the file where tasks are persisted.
     private static final String FILE_PATH = "data/gojo.txt";
     private static final String MSG_DISMISSED = "Dismissed.";
-    private static final String MSG_GREETING = "Greetings. I am Gojo. I am here to manage your tasks. You may begin.\n\n";
     private static final String MSG_LIST_HEADER = "Here are the tasks in your list:\n";
     private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark.";
     private static final String MSG_MARK_ERROR = "Please specify a task number to mark.";
@@ -35,6 +34,7 @@ public class Gojo {
     private static final String MSG_SCHEDULE_ERROR = "Please specify a date to view the schedule.";
     private static final String MSG_FIND_ERROR = "Please specify a keyword to search for.";
     private static final String MSG_MAX_TASKS = "Cannot add more than 100 items";
+    private static final String MSG_FIND_NO_MATCH = "No tasks matching '%s' found.";
 
     // The list of tasks currently managed by the application.
     private TaskList tasks;
@@ -73,28 +73,28 @@ public class Gojo {
             String arguments = Parser.getArguments(input);
 
             switch (command) {
-            case BYE:
-                return handleBye();
-            case LIST:
-                return handleList();
-            case UNMARK:
-                return handleUnmark(arguments);
-            case MARK:
-                return handleMark(arguments);
-            case TODO:
-                return handleTodo(arguments);
-            case DEADLINE:
-                return handleDeadline(arguments);
-            case EVENT:
-                return handleEvent(arguments);
-            case DELETE:
-                return handleDelete(arguments);
-            case SCHEDULE:
-                return handleSchedule(arguments);
-            case FIND:
-                return handleFind(arguments);
-            default:
-                throw new IllegalStateException("I do not understand that command. Please be precise.");
+                case BYE:
+                    return handleBye();
+                case LIST:
+                    return handleList();
+                case UNMARK:
+                    return handleUnmark(arguments);
+                case MARK:
+                    return handleMark(arguments);
+                case TODO:
+                    return handleTodo(arguments);
+                case DEADLINE:
+                    return handleDeadline(arguments);
+                case EVENT:
+                    return handleEvent(arguments);
+                case DELETE:
+                    return handleDelete(arguments);
+                case SCHEDULE:
+                    return handleSchedule(arguments);
+                case FIND:
+                    return handleFind(arguments);
+                default:
+                    throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();
@@ -109,10 +109,9 @@ public class Gojo {
 
     private String handleList() {
         StringBuilder response = new StringBuilder();
-        response.append(MSG_GREETING);
         response.append(MSG_LIST_HEADER);
         for (int i = 0; i < tasks.size(); i++) {
-            response.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+            response.append((i + 1)).append(". ").append(tasks.getAllTasks().get(i)).append("\n");
         }
         return response.toString();
     }
@@ -208,9 +207,10 @@ public class Gojo {
         int deleteIndex = Parser.parseIndex(arguments);
         Task removedTask = tasks.delete(deleteIndex);
         storage.save(tasks.getAllTasks());
-        return "I have removed that task. It no longer exists:\n" +
-                "  " + removedTask + "\n" +
-                "Now you have " + tasks.size() + " tasks in the list.";
+        return "I have removed that task. It no longer exists:\n"
+                + "  " + removedTask + "\n"
+                + "Now you have " + tasks.size()
+                + " tasks in the list.";
     }
 
     private String handleSchedule(String arguments) throws ChatbotExceptions {
@@ -259,7 +259,7 @@ public class Gojo {
         List<Task> matchingTasks = tasks.findTasks(keyword);
 
         if (matchingTasks.isEmpty()) {
-            throw new ChatbotExceptions("No tasks matching '" + keyword + "' found.");
+            throw new ChatbotExceptions(String.format(MSG_FIND_NO_MATCH, keyword));
         }
 
         StringBuilder response = new StringBuilder();
