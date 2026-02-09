@@ -53,39 +53,8 @@ public class Storage {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 try {
-                    // Split the line by " | " to extract task details
-                    // Format: Type | IsDone | Description [| Date/Time]
-                    String[] parts = line.split(" \\| ");
-                    String type = parts[0];
-                    boolean isDone = parts[1].equals("1");
-                    String description = parts[2];
-
-                    Task task = null;
-                    // Determine task type and create appropriate object
-                    switch(type) {
-                    case "T":
-                        task = new Todo(description);
-                        break;
-                    case "D":
-                        // Deadline format includes additional "by" date
-                        String by = parts[3];
-                        task = new Deadline(description, by);
-                        break;
-                    case "E":
-                        // Event format includes additional "from" and "to" times
-                        String from = parts[3];
-                        String to = parts[4];
-                        task = new Event(description, from, to);
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + type);
-
-                    }
-
+                    Task task = parseTaskFromLine(line);
                     if (task != null) {
-                        if (isDone) {
-                            task.markAsDone();
-                        }
                         tasks.add(task);
                     }
                 } catch (Exception e) {
@@ -97,6 +66,41 @@ public class Storage {
             System.out.println("Error loading data from file: " + e.getMessage());
         }
         return tasks;
+    }
+
+    private Task parseTaskFromLine(String line) throws ChatbotExceptions {
+        // Split the line by " | " to extract task details
+        // Format: Type | IsDone | Description [| Date/Time]
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        Task task = null;
+        // Determine task type and create appropriate object
+        switch (type) {
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                // Deadline format includes additional "by" date
+                String by = parts[3];
+                task = new Deadline(description, by);
+                break;
+            case "E":
+                // Event format includes additional "from" and "to" times
+                String from = parts[3];
+                String to = parts[4];
+                task = new Event(description, from, to);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+
+        if (task != null && isDone) {
+            task.markAsDone();
+        }
+        return task;
     }
 
     /**
