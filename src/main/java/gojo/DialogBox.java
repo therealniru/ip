@@ -39,7 +39,7 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         dialog.setWrapText(true);
-        dialog.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
+        dialog.setTextOverrun(javafx.scene.control.OverrunStyle.ELLIPSIS);
         // 270 is safe for a 400px width window (400 - 99 image - padding)
         dialog.setMaxWidth(270.0);
         dialog.setPrefWidth(270.0);

@@ -19,10 +19,7 @@
                 fx:id="dialog"
                 wrapText="true"
                 textOverrun="CLIP"
-                style="
-                    -fx-padding: 14;
-                    -fx-background-radius: 18;
-                " />
+                textOverrun="CLIP" />
 
         <!-- Profile picture -->
         <ImageView
