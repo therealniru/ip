@@ -42,6 +42,7 @@ public class Gojo {
         // Attempt to load tasks from the defined file path
         tasks = new TaskList(storage.load());
     }
+
     /**
      * Processes the user input and returns a response string.
      *
@@ -67,7 +68,6 @@ public class Gojo {
                 return "Dismissed.";
 
             case LIST:
-                response.append("Greetings. I am Gojo. I am here to manage your tasks. You may begin.\n\n");
                 response.append("Here are the tasks in your list:\n");
                 for (int i = 0; i < tasks.size(); i++) {
                     response.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
@@ -188,29 +188,35 @@ public class Gojo {
                 response.append("Tasks for ").append(queryDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")))
                         .append(":\n");
 
-                boolean found = false;
-                for (Task t : tasks.getAllTasks()) {
-                    if (t instanceof Deadline) {
-                        Deadline d = (Deadline) t;
-                        if (d.by.toLocalDate().equals(queryDate)) {
-                            response.append("  [D] ").append(d.description).append(" (due: ")
-                                    .append(DateParser.formatDateTime(d.by)).append(")\n");
-                            found = true;
-                        }
-                    } else if (t instanceof Event) {
-                        Event e = (Event) t;
-                        LocalDate startDate = e.from.toLocalDate();
-                        LocalDate endDate = e.to.toLocalDate();
-                        if (!queryDate.isBefore(startDate) && !queryDate.isAfter(endDate)) {
-                            response.append("  [E] ").append(e.description).append(" (from: ")
-                                    .append(DateParser.formatDateTime(e.from)).append(" to: ")
-                                    .append(DateParser.formatDateTime(e.to)).append(")\n");
-                            found = true;
-                        }
-                    }
-                }
-                if (!found) {
+                String scheduledTasks = tasks.getAllTasks().stream()
+                        .filter(t -> {
+                            if (t instanceof Deadline) {
+                                return ((Deadline) t).by.toLocalDate().equals(queryDate);
+                            } else if (t instanceof Event) {
+                                Event e = (Event) t;
+                                return !queryDate.isBefore(e.from.toLocalDate())
+                                        && !queryDate.isAfter(e.to.toLocalDate());
+                            }
+                            return false;
+                        })
+                        .map(t -> {
+                            if (t instanceof Deadline) {
+                                Deadline d = (Deadline) t;
+                                return "  [D] " + d.description + " (due: "
+                                        + DateParser.formatDateTime(d.by) + ")\n";
+                            } else {
+                                Event e = (Event) t;
+                                return "  [E] " + e.description + " (from: "
+                                        + DateParser.formatDateTime(e.from) + " to: "
+                                        + DateParser.formatDateTime(e.to) + ")\n";
+                            }
+                        })
+                        .collect(java.util.stream.Collectors.joining());
+
+                if (scheduledTasks.isEmpty()) {
                     response.append("  No tasks scheduled for this date.");
+                } else {
+                    response.append(scheduledTasks);
                 }
                 break;
 

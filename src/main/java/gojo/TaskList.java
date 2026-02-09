@@ -94,12 +94,8 @@ public class TaskList {
      * @return A list of tasks matching the keyword.
      */
     public List<Task> findTasks(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.description.contains(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.description.contains(keyword))
+                .collect(java.util.stream.Collectors.toList());
     }
 }
