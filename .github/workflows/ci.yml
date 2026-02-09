@@ -10,16 +10,8 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - name: Set up repository
-        uses: actions/checkout@master
-
-      - name: Set up repository
-        uses: actions/checkout@master
-        with:
-          ref: master
-
-      - name: Merge to master
-        run: git checkout --progress --force ${{ github.sha }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
@@ -27,12 +19,17 @@ jobs:
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '17'
           java-package: jdk+fx
 
-      - name: Build and check with Gradle
+      - name: Build and check (Linux / macOS)
+        if: runner.os != 'Windows'
         run: ./gradlew check
+
+      - name: Build and check (Windows)
+        if: runner.os == 'Windows'
+        run: gradlew.bat check
 
       - name: Install dos2unix on Linux
         if: runner.os == 'Linux'
@@ -42,13 +39,13 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install dos2unix
 
-      - name: Perform IO redirection test (*NIX or macOS)
+      - name: Perform IO redirection test (*NIX / macOS)
         if: runner.os == 'Linux' || runner.os == 'macOS'
-        working-directory: ${{ github.workspace }}/text-ui-test
+        working-directory: text-ui-test
         run: ./runtest.sh
 
       - name: Perform IO redirection test (Windows)
-        if: always() && runner.os == 'Windows'
-        working-directory: ${{ github.workspace }}/text-ui-test
+        if: runner.os == 'Windows'
+        working-directory: text-ui-test
         shell: cmd
         run: runtest.bat
