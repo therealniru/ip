@@ -45,7 +45,7 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
 
         // Bind canvas size to main pane size
         matrixCanvas.widthProperty().bind(mainPane.widthProperty());
@@ -107,7 +107,8 @@ public class MainWindow extends AnchorPane {
         gojo = g;
         // Show welcome message
         dialogContainer.getChildren().add(
-                DialogBox.getGojoDialog("Hi, I am Gojo. I'm your chatbot.", gojoImage));
+                DialogBox.getGojoDialog("Hi, I'm Gojo Saturo, your chatbot. Domain Expansion : Unfinished Checklist",
+                        gojoImage));
     }
 
     /**

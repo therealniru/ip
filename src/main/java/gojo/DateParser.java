@@ -44,6 +44,7 @@ public class DateParser {
      *                           date-time.
      */
     public static LocalDateTime parseDateTime(String input) throws ChatbotExceptions {
+        assert input != null : "Date input string cannot be null";
         String trimmedInput = input.trim().toLowerCase();
 
         // Handle keywords
@@ -87,6 +88,7 @@ public class DateParser {
      * @return A formatted string (e.g., "MMM d yyyy HH:mm").
      */
     public static String formatDateTime(LocalDateTime dateTime) {
+        assert dateTime != null : "Cannot format a null LocalDateTime object";
         return dateTime.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm"));
     }
 
