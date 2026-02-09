@@ -8,6 +8,9 @@ package gojo;
  * </p>
  */
 public class Parser {
+    private static final String MSG_UNKNOWN_COMMAND = "OOPS!!! I'm sorry, but I don't know what that means :-(";
+    private static final String MSG_INVALID_INDEX = "OOPS!!! The task number must be an integer.";
+
     /**
      * Private constructor to prevent instantiation of utility class.
      */
@@ -32,7 +35,7 @@ public class Parser {
         try {
             return Command.valueOf(commandStr);
         } catch (IllegalArgumentException e) {
-            throw new ChatbotExceptions("OOPS!!! I'm sorry, but I don't know what that means :-(");
+            throw new ChatbotExceptions(MSG_UNKNOWN_COMMAND);
         }
     }
 
@@ -66,7 +69,7 @@ public class Parser {
             // Remove non-digit characters and parse
             return Integer.parseInt(args.replaceAll("\\D+", "")) - 1;
         } catch (NumberFormatException e) {
-            throw new ChatbotExceptions("OOPS!!! The task number must be an integer.");
+            throw new ChatbotExceptions(MSG_INVALID_INDEX);
         }
     }
 }
