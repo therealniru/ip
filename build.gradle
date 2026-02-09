@@ -13,6 +13,10 @@ checkstyle {
     toolVersion = '11.0.0'
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 
 dependencies {
     String javaFxVersion = '17.0.7'

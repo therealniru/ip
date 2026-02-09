@@ -126,7 +126,7 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
 
         if (input.trim().equalsIgnoreCase("bye") || input.trim().equalsIgnoreCase("b")
-                || input.trim().equalsIgnoreCase("quit") ) {
+                || input.trim().equalsIgnoreCase("quit")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
             delay.setOnFinished(event -> {
                 Platform.exit();
