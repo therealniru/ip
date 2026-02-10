@@ -75,28 +75,28 @@ public class Gojo {
             String arguments = Parser.getArguments(input);
 
             switch (command) {
-                case BYE:
-                    return handleBye();
-                case LIST:
-                    return handleList();
-                case UNMARK:
-                    return handleUnmark(arguments);
-                case MARK:
-                    return handleMark(arguments);
-                case TODO:
-                    return handleTodo(arguments);
-                case DEADLINE:
-                    return handleDeadline(arguments);
-                case EVENT:
-                    return handleEvent(arguments);
-                case DELETE:
-                    return handleDelete(arguments);
-                case SCHEDULE:
-                    return handleSchedule(arguments);
-                case FIND:
-                    return handleFind(arguments);
-                default:
-                    throw new IllegalStateException("I do not understand that command. Please be precise.");
+            case BYE:
+                return handleBye();
+            case LIST:
+                return handleList();
+            case UNMARK:
+                return handleUnmark(arguments);
+            case MARK:
+                return handleMark(arguments);
+            case TODO:
+                return handleTodo(arguments);
+            case DEADLINE:
+                return handleDeadline(arguments);
+            case EVENT:
+                return handleEvent(arguments);
+            case DELETE:
+                return handleDelete(arguments);
+            case SCHEDULE:
+                return handleSchedule(arguments);
+            case FIND:
+                return handleFind(arguments);
+            default:
+                throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();
@@ -136,6 +136,7 @@ public class Gojo {
     }
 
     private String handleMark(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (arguments.isEmpty()) {
             throw new ChatbotExceptions(MSG_MARK_ERROR);
         }
@@ -147,6 +148,7 @@ public class Gojo {
     }
 
     private String handleTodo(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (tasks.size() >= 100) {
             return MSG_MAX_TASKS;
         }
@@ -160,6 +162,7 @@ public class Gojo {
     }
 
     private String handleDeadline(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (tasks.size() >= 100) {
             return MSG_MAX_TASKS;
         }
@@ -182,6 +185,7 @@ public class Gojo {
     }
 
     private String handleEvent(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (tasks.size() >= 100) {
             return MSG_MAX_TASKS;
         }
@@ -209,6 +213,7 @@ public class Gojo {
     }
 
     private String handleDelete(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (arguments.isEmpty()) {
             throw new ChatbotExceptions(MSG_DELETE_ERROR);
         }
@@ -220,6 +225,7 @@ public class Gojo {
     }
 
     private String handleSchedule(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (arguments.isEmpty()) {
             throw new ChatbotExceptions(MSG_SCHEDULE_ERROR);
         }
@@ -266,6 +272,7 @@ public class Gojo {
     }
 
     private String handleFind(String arguments) throws ChatbotExceptions {
+        assert arguments != null : "Arguments cannot be null";
         if (arguments.isEmpty()) {
             throw new ChatbotExceptions(MSG_FIND_ERROR);
         }

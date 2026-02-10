@@ -73,20 +73,20 @@ public class Storage {
 
         Task task = null;
         switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                String by = parts[3];
-                task = new Deadline(description, by);
-                break;
-            case "E":
-                String from = parts[3];
-                String to = parts[4];
-                task = new Event(description, from, to);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            String by = parts[3];
+            task = new Deadline(description, by);
+            break;
+        case "E":
+            String from = parts[3];
+            String to = parts[4];
+            task = new Event(description, from, to);
+            break;
+        default:
+            throw new IllegalStateException("Unexpected value: " + type);
         }
 
         if (task != null && isDone) {
@@ -105,6 +105,7 @@ public class Storage {
      * @throws ChatbotExceptions If there are errors writing to the file.
      */
     public void save(List<Task> tasks) throws ChatbotExceptions {
+        assert tasks != null : "Tasks list cannot be null";
         try {
             FileWriter writer = new FileWriter(filePath);
             tasks.stream()

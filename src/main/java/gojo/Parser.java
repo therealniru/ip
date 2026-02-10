@@ -36,33 +36,35 @@ public class Parser {
         String commandStr = parts[0].toUpperCase();
 
         switch (commandStr) {
-            case "T":
-                commandStr = "TODO";
-                break;
-            case "D":
-                commandStr = "DEADLINE";
-                break;
-            case "E":
-                commandStr = "EVENT";
-                break;
-            case "L":
-                commandStr = "LIST";
-                break;
-            case "M":
-                commandStr = "MARK";
-                break;
-            case "U":
-                commandStr = "UNMARK";
-                break;
-            case "B":
-                commandStr = "BYE";
-                break;
-            case "S":
-                commandStr = "SCHEDULE";
-                break;
-            case "F":
-                commandStr = "FIND";
-                break;
+        case "T":
+            commandStr = "TODO";
+            break;
+        case "D":
+            commandStr = "DEADLINE";
+            break;
+        case "E":
+            commandStr = "EVENT";
+            break;
+        case "L":
+            commandStr = "LIST";
+            break;
+        case "M":
+            commandStr = "MARK";
+            break;
+        case "U":
+            commandStr = "UNMARK";
+            break;
+        case "B":
+            commandStr = "BYE";
+            break;
+        case "S":
+            commandStr = "SCHEDULE";
+            break;
+        case "F":
+            commandStr = "FIND";
+            break;
+        default:
+            break;
         }
 
         try {
