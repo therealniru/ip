@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * The entry point for the gojo.Gojo chatbot application.
@@ -69,9 +71,14 @@ public class Gojo {
 
             case LIST:
                 response.append("Here are the tasks in your list:\n");
-                for (int i = 0; i < tasks.size(); i++) {
-                    response.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
-                }
+                IntStream.range(0, tasks.size())
+                        .forEach(i -> {
+                            try {
+                                response.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+                            } catch (ChatbotExceptions e) {
+                                e.printStackTrace();
+                            }
+                        });
                 break;
 
             case UNMARK:
@@ -211,7 +218,7 @@ public class Gojo {
                                         + DateParser.formatDateTime(e.to) + ")\n";
                             }
                         })
-                        .collect(java.util.stream.Collectors.joining());
+                        .collect(Collectors.joining());
 
                 if (scheduledTasks.isEmpty()) {
                     response.append("  No tasks scheduled for this date.");
