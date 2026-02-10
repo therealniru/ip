@@ -42,6 +42,7 @@ public class Gojo {
         // Attempt to load tasks from the defined file path
         tasks = new TaskList(storage.load());
     }
+
     /**
      * Processes the user input and returns a response string.
      *
@@ -57,6 +58,7 @@ public class Gojo {
 
             // Parse the command and arguments separately
             Command command = Parser.parseCommand(input);
+            assert command != null : "Command should not be null";
             String arguments = Parser.getArguments(input);
 
             StringBuilder response = new StringBuilder();
@@ -67,7 +69,6 @@ public class Gojo {
                 return "Dismissed.";
 
             case LIST:
-                response.append("Greetings. I am Gojo. I am here to manage your tasks. You may begin.\n\n");
                 response.append("Here are the tasks in your list:\n");
                 for (int i = 0; i < tasks.size(); i++) {
                     response.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
@@ -105,8 +106,10 @@ public class Gojo {
                 if (arguments.isEmpty()) {
                     throw new ChatbotExceptions("OOPS!!! The description of a todo cannot be empty.");
                 }
+                int initialSize = tasks.size(); // Capture size before
                 Task newTodo = new Todo(arguments.trim());
                 tasks.add(newTodo);
+                assert tasks.size() == initialSize + 1 : "Task list size should increase by 1";
                 response.append("Confirmed. I have added this to your schedule:\n");
                 response.append("  ").append(newTodo).append("\n");
                 response.append("Now you have ").append(tasks.size()).append(" tasks in the list.");
@@ -232,6 +235,7 @@ public class Gojo {
                 break;
 
             default:
+                assert false : "Command " + command + " not recognized";
                 throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
             return response.toString();

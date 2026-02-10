@@ -27,6 +27,7 @@ public class TaskList {
      * @param tasks The initial list of tasks.
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "Initial task list cannot be null";
         this.tasks = tasks;
     }
 
@@ -36,6 +37,7 @@ public class TaskList {
      * @param task The task to add.
      */
     public void add(Task task) {
+        assert task != null : "Cannot add a null task to the list";
         tasks.add(task);
     }
 
@@ -51,6 +53,8 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new ChatbotExceptions("OOPS!!! The task number is out of bounds.");
         }
+        // If we passed the check above, the index MUST be valid.
+        assert index >= 0 && index < tasks.size() : "Index should be valid for deletion";
         return tasks.remove(index);
     }
 
@@ -65,6 +69,7 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new ChatbotExceptions("OOPS!!! The task number is out of bounds.");
         }
+        assert index >= 0 && index < tasks.size() : "Index should be valid for retrieval";
         return tasks.get(index);
     }
 

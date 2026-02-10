@@ -18,7 +18,7 @@ then
 fi
 
 # compile the code into the bin folder
-javac  -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/gojo/*.java
+javac  -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/gojo/Gojo.java ../src/main/java/gojo/UI.java ../src/main/java/gojo/Storage.java ../src/main/java/gojo/TaskList.java ../src/main/java/gojo/Parser.java ../src/main/java/gojo/DateParser.java ../src/main/java/gojo/Command.java ../src/main/java/gojo/ChatbotExceptions.java ../src/main/java/gojo/Task.java ../src/main/java/gojo/Todo.java ../src/main/java/gojo/Deadline.java ../src/main/java/gojo/Event.java
 if [ $? -eq 0 ]
 then
     echo "========= COMPILATION SUCCESS ========="
