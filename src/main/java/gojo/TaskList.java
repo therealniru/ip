@@ -69,6 +69,7 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new ChatbotExceptions("OOPS!!! The task number is out of bounds.");
         }
+        assert index >= 0 && index < tasks.size() : "Index should be valid for retrieval";
         return tasks.get(index);
     }
 

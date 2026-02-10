@@ -23,8 +23,7 @@ public class DateParser {
     private static final List<String> DATE_TIME_FORMATS = Arrays.asList(
             "d/M/yyyy HHmm",
             "yyyy-MM-dd HHmm",
-            "d-M-yyyy HHmm"
-    ); // For parity if needed
+            "d-M-yyyy HHmm"); // For parity if needed
 
     // List of supported date-only formats (default time will be set)
 
@@ -32,20 +31,19 @@ public class DateParser {
             "d/M/yyyy",
             "yyyy-MM-dd",
             "d-M-yyyy",
-            "MMM d yyyy"
-    );
+            "MMM d yyyy");
 
     /**
      * Parses a string input into a LocalDateTime object.
      *
-     * @param input The date string to parse.
+     * @param dateTime The date string to parse.
      * @return The parsed LocalDateTime object.
      * @throws ChatbotExceptions If the input cannot be parsed into a valid
      *                           date-time.
      */
-    public static LocalDateTime parseDateTime(String input) throws ChatbotExceptions {
-        assert input != null : "Date input string cannot be null";
-        String trimmedInput = input.trim().toLowerCase();
+    public static LocalDateTime parseDateTime(String dateTime) throws ChatbotExceptions {
+        assert dateTime != null : "DateTime string cannot be null";
+        String trimmedInput = dateTime.trim().toLowerCase();
 
         // Handle keywords
         if (trimmedInput.equals("today")) {
@@ -60,7 +58,7 @@ public class DateParser {
         for (String format : DATE_TIME_FORMATS) {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-                return LocalDateTime.parse(input.trim(), formatter);
+                return LocalDateTime.parse(trimmedInput, formatter);
             } catch (DateTimeParseException ignored) {
                 // Try next format
             }
@@ -71,7 +69,7 @@ public class DateParser {
         for (String format : DATE_ONLY_FORMATS) {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-                LocalDate date = LocalDate.parse(input.trim(), formatter);
+                LocalDate date = LocalDate.parse(trimmedInput, formatter);
                 return date.atTime(23, 59);
             } catch (DateTimeParseException ignored) {
                 // Try next format
@@ -84,12 +82,12 @@ public class DateParser {
     /**
      * Formats a LocalDateTime object into a user-friendly string.
      *
-     * @param dateTime The LocalDateTime object to format.
+     * @param date The LocalDateTime object to format.
      * @return A formatted string (e.g., "MMM d yyyy HH:mm").
      */
-    public static String formatDateTime(LocalDateTime dateTime) {
-        assert dateTime != null : "Cannot format a null LocalDateTime object";
-        return dateTime.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm"));
+    public static String formatDateTime(LocalDateTime date) {
+        assert date != null : "LocalDateTime object cannot be null";
+        return date.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm"));
     }
 
     /**

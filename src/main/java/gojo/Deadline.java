@@ -25,6 +25,7 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by) throws ChatbotExceptions {
         super(description);
+        assert description != null : "Deadline description cannot be null";
         assert by != null && !by.isEmpty() : "Deadline date string cannot be null or empty";
         this.by = DateParser.parseDateTime(by);
         assert this.by != null : "Deadline LocalDateTime object should not be null after parsing";

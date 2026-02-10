@@ -62,23 +62,23 @@ public class Storage {
 
                     Task task = null;
                     // Determine task type and create appropriate object
-                    switch(type) {
-                    case "T":
-                        task = new Todo(description);
-                        break;
-                    case "D":
-                        // Deadline format includes additional "by" date
-                        String by = parts[3];
-                        task = new Deadline(description, by);
-                        break;
-                    case "E":
-                        // Event format includes additional "from" and "to" times
-                        String from = parts[3];
-                        String to = parts[4];
-                        task = new Event(description, from, to);
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + type);
+                    switch (type) {
+                        case "T":
+                            task = new Todo(description);
+                            break;
+                        case "D":
+                            // Deadline format includes additional "by" date
+                            String by = parts[3];
+                            task = new Deadline(description, by);
+                            break;
+                        case "E":
+                            // Event format includes additional "from" and "to" times
+                            String from = parts[3];
+                            String to = parts[4];
+                            task = new Event(description, from, to);
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + type);
 
                     }
 
@@ -109,6 +109,7 @@ public class Storage {
      * @throws ChatbotExceptions If there are errors writing to the file.
      */
     public void save(List<Task> tasks) throws ChatbotExceptions {
+        assert tasks != null : "Tasks list cannot be null";
         try {
             FileWriter writer = new FileWriter(filePath);
             for (Task task : tasks) {
