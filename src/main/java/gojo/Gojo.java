@@ -73,28 +73,28 @@ public class Gojo {
             String arguments = Parser.getArguments(input);
 
             switch (command) {
-            case BYE:
-                return handleBye();
-            case LIST:
-                return handleList();
-            case UNMARK:
-                return handleUnmark(arguments);
-            case MARK:
-                return handleMark(arguments);
-            case TODO:
-                return handleTodo(arguments);
-            case DEADLINE:
-                return handleDeadline(arguments);
-            case EVENT:
-                return handleEvent(arguments);
-            case DELETE:
-                return handleDelete(arguments);
-            case SCHEDULE:
-                return handleSchedule(arguments);
-            case FIND:
-                return handleFind(arguments);
-            default:
-                throw new IllegalStateException("I do not understand that command. Please be precise.");
+                case BYE:
+                    return handleBye();
+                case LIST:
+                    return handleList();
+                case UNMARK:
+                    return handleUnmark(arguments);
+                case MARK:
+                    return handleMark(arguments);
+                case TODO:
+                    return handleTodo(arguments);
+                case DEADLINE:
+                    return handleDeadline(arguments);
+                case EVENT:
+                    return handleEvent(arguments);
+                case DELETE:
+                    return handleDelete(arguments);
+                case SCHEDULE:
+                    return handleSchedule(arguments);
+                case FIND:
+                    return handleFind(arguments);
+                default:
+                    throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();
@@ -226,29 +226,37 @@ public class Gojo {
 
         boolean found = false;
         for (Task t : tasks.getAllTasks()) {
-            if (t instanceof Deadline) {
-                Deadline d = (Deadline) t;
-                if (d.by.toLocalDate().equals(queryDate)) {
-                    response.append("  [D] ").append(d.description).append(" (due: ")
-                            .append(DateParser.formatDateTime(d.by)).append(")\n");
-                    found = true;
-                }
-            } else if (t instanceof Event) {
-                Event e = (Event) t;
-                LocalDate startDate = e.from.toLocalDate();
-                LocalDate endDate = e.to.toLocalDate();
-                if (!queryDate.isBefore(startDate) && !queryDate.isAfter(endDate)) {
-                    response.append("  [E] ").append(e.description).append(" (from: ")
-                            .append(DateParser.formatDateTime(e.from)).append(" to: ")
-                            .append(DateParser.formatDateTime(e.to)).append(")\n");
-                    found = true;
-                }
+            if (isTaskScheduledOnDate(t, queryDate)) {
+                response.append(formatScheduledTask(t));
+                found = true;
             }
         }
         if (!found) {
             response.append("  No tasks scheduled for this date.");
         }
         return response.toString();
+    }
+
+    private boolean isTaskScheduledOnDate(Task t, LocalDate queryDate) {
+        if (t instanceof Deadline) {
+            return ((Deadline) t).by.toLocalDate().equals(queryDate);
+        } else if (t instanceof Event) {
+            Event e = (Event) t;
+            return !queryDate.isBefore(e.from.toLocalDate()) && !queryDate.isAfter(e.to.toLocalDate());
+        }
+        return false;
+    }
+
+    private String formatScheduledTask(Task t) {
+        if (t instanceof Deadline) {
+            Deadline d = (Deadline) t;
+            return "  [D] " + d.description + " (due: " + DateParser.formatDateTime(d.by) + ")\n";
+        } else if (t instanceof Event) {
+            Event e = (Event) t;
+            return "  [E] " + e.description + " (from: " + DateParser.formatDateTime(e.from) + " to: "
+                    + DateParser.formatDateTime(e.to) + ")\n";
+        }
+        return "";
     }
 
     private String handleFind(String arguments) throws ChatbotExceptions {

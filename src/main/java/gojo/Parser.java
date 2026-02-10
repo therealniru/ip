@@ -10,6 +10,7 @@ package gojo;
 public class Parser {
     private static final String MSG_UNKNOWN_COMMAND = "OOPS!!! I'm sorry, but I don't know what that means :-(";
     private static final String MSG_INVALID_INDEX = "OOPS!!! The task number must be an integer.";
+    private static final int DISPLAY_INDEX_OFFSET = 1;
 
     /**
      * Private constructor to prevent instantiation of utility class.
@@ -67,7 +68,7 @@ public class Parser {
     public static int parseIndex(String args) throws ChatbotExceptions {
         try {
             // Remove non-digit characters and parse
-            return Integer.parseInt(args.replaceAll("\\D+", "")) - 1;
+            return Integer.parseInt(args.replaceAll("\\D+", "")) - DISPLAY_INDEX_OFFSET;
         } catch (NumberFormatException e) {
             throw new ChatbotExceptions(MSG_INVALID_INDEX);
         }
