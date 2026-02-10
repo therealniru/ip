@@ -5,7 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.UncheckedIOException;
 
 /**
  * Handles loading tasks from the file and saving tasks in the file.
@@ -37,38 +42,28 @@ public class Storage {
      * @return The list of tasks loaded from the file.
      */
     public List<Task> load() {
-        List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
+        if (!file.exists()) {
+            return new ArrayList<>();
+        }
         try {
-            // Check if file exists; if not, create parent directories and return empty list
-            if (!file.exists()) {
-                File directory = file.getParentFile();
-                if (directory != null && !directory.exists()) {
-                    directory.mkdirs();
-                }
-                return tasks; // Return empty list if file doesn't exist
-            }
-
-            Scanner fileScanner = new Scanner(file);
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                try {
-                    Task task = parseTaskFromLine(line);
-                    if (task != null) {
-                        tasks.add(task);
-                    }
-                } catch (Exception e) {
-                    System.out.println("Skipping corrupted line: " + line);
-                }
-            }
-            fileScanner.close();
+            return Files.lines(Paths.get(filePath))
+                    .map(line -> {
+                        try {
+                            return parseTaskFromLine(line);
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             System.out.println("Error loading data from file: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return tasks;
     }
 
-    private Task parseTaskFromLine(String line) throws ChatbotExceptions {
+    private Task parseTaskFromLine(String line) throws Exception {
         // Split the line by " | " to extract task details
         // Format: Type | IsDone | Description [| Date/Time]
         String[] parts = line.split(" \\| ");
@@ -77,24 +72,21 @@ public class Storage {
         String description = parts[2];
 
         Task task = null;
-        // Determine task type and create appropriate object
         switch (type) {
-        case "T":
-            task = new Todo(description);
-            break;
-        case "D":
-            // Deadline format includes additional "by" date
-            String by = parts[3];
-            task = new Deadline(description, by);
-            break;
-        case "E":
-            // Event format includes additional "from" and "to" times
-            String from = parts[3];
-            String to = parts[4];
-            task = new Event(description, from, to);
-            break;
-        default:
-            throw new IllegalStateException("Unexpected value: " + type);
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                String by = parts[3];
+                task = new Deadline(description, by);
+                break;
+            case "E":
+                String from = parts[3];
+                String to = parts[4];
+                task = new Event(description, from, to);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
         }
 
         if (task != null && isDone) {
@@ -115,12 +107,17 @@ public class Storage {
     public void save(List<Task> tasks) throws ChatbotExceptions {
         try {
             FileWriter writer = new FileWriter(filePath);
-            for (Task task : tasks) {
-                // Convert each task to its file storage format string
-                writer.write(task.toFileFormat() + System.lineSeparator());
-            }
+            tasks.stream()
+                    .map(task -> task.toFileFormat() + System.lineSeparator())
+                    .forEach(line -> {
+                        try {
+                            writer.write(line);
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    });
             writer.close();
-        } catch (IOException e) {
+        } catch (IOException | UncheckedIOException e) {
             throw new ChatbotExceptions("Error saving data: " + e.getMessage());
         }
     }

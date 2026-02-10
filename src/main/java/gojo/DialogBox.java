@@ -38,12 +38,22 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
+        dialog.setWrapText(true);
+        dialog.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
+        // 270 is safe for a 400px width window (400 - 99 image - padding)
+        dialog.setMaxWidth(270.0);
+        dialog.setPrefWidth(270.0);
+        dialog.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
         displayPicture.setImage(img);
 
         // Circular clip for the profile picture
         // Assuming fitWidth/fitHeight are set to 99 in FXML, radius is roughly 49.5
         Circle clip = new Circle(49.5, 49.5, 49.5);
         displayPicture.setClip(clip);
+
+        dialog.setMaxHeight(Double.MAX_VALUE);
+        HBox.setHgrow(dialog, javafx.scene.layout.Priority.ALWAYS);
+
     }
 
     /**

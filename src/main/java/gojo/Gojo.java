@@ -208,9 +208,7 @@ public class Gojo {
         int deleteIndex = Parser.parseIndex(arguments);
         Task removedTask = tasks.delete(deleteIndex);
         storage.save(tasks.getAllTasks());
-        return "I have removed that task. It no longer exists:\n" +
-                "  " + removedTask + "\n" +
-                "Now you have " + tasks.size() + " tasks in the list.";
+        return "I have removed that task. It no longer exists:\n" + "  " + removedTask + "\n" + "Now you have " + tasks.size() + " tasks in the list.";
     }
 
     private String handleSchedule(String arguments) throws ChatbotExceptions {
