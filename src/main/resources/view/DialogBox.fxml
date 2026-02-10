@@ -13,6 +13,7 @@
         spacing="10">
 
     <children>
+<<<<<<< HEAD
 
         <!-- Chat bubble text -->
         <Label
@@ -31,6 +32,10 @@
                 fitHeight="99"
                 preserveRatio="true" />
 
+=======
+        <Label fx:id="dialog" maxHeight="Infinity" minHeight="-Infinity" text="Label" wrapText="true" />
+        <ImageView fx:id="displayPicture" fitHeight="99.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="false" />
+>>>>>>> master
     </children>
 
     <padding>

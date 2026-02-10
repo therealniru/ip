@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * The entry point for the gojo.Gojo chatbot application.
@@ -23,6 +21,20 @@ import java.util.stream.IntStream;
 public class Gojo {
     // Path to the file where tasks are persisted.
     private static final String FILE_PATH = "data/gojo.txt";
+    private static final String MSG_DISMISSED = "Dismissed.";
+    private static final String MSG_GREETING = "Greetings. I am Gojo. I am here to manage your tasks. You may begin.\n\n";
+    private static final String MSG_LIST_HEADER = "Here are the tasks in your list:\n";
+    private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark.";
+    private static final String MSG_MARK_ERROR = "Please specify a task number to mark.";
+    private static final String MSG_TODO_EMPTY = "OOPS!!! The description of a todo cannot be empty.";
+    private static final String MSG_DEADLINE_EMPTY = "OOPS!!! The description of a deadline cannot be empty.";
+    private static final String MSG_DEADLINE_TIME_EMPTY = "OOPS!!! The deadline cannot be empty.";
+    private static final String MSG_EVENT_EMPTY = "OOPS!!! The description of a event cannot be empty.";
+    private static final String MSG_EVENT_TIME_EMPTY = "OOPS!!! The event time is missing.";
+    private static final String MSG_DELETE_ERROR = "Please specify a task number to delete.";
+    private static final String MSG_SCHEDULE_ERROR = "Please specify a date to view the schedule.";
+    private static final String MSG_FIND_ERROR = "Please specify a keyword to search for.";
+    private static final String MSG_MAX_TASKS = "Cannot add more than 100 items";
 
     // The list of tasks currently managed by the application.
     private TaskList tasks;
@@ -53,206 +65,222 @@ public class Gojo {
      */
     public String getResponse(String input) {
         try {
-            // Ignore empty inputs
             if (input.trim().isEmpty()) {
                 return "";
             }
 
-            // Parse the command and arguments separately
             Command command = Parser.parseCommand(input);
             String arguments = Parser.getArguments(input);
 
-            StringBuilder response = new StringBuilder();
-
-            // Handle the command based on its type
             switch (command) {
             case BYE:
-                return "Dismissed.";
-
+                return handleBye();
             case LIST:
-                response.append("Here are the tasks in your list:\n");
-                IntStream.range(0, tasks.size())
-                        .forEach(i -> {
-                            try {
-                                response.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
-                            } catch (ChatbotExceptions e) {
-                                e.printStackTrace();
-                            }
-                        });
-                break;
-
+                return handleList();
             case UNMARK:
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("Please specify a task number to unmark.");
-                }
-                int taskNumber = Parser.parseIndex(arguments);
-                Task task = tasks.get(taskNumber);
-                task.markAsNotDone();
-                response.append("OK, I've marked this task as not done yet:\n");
-                response.append(task.toString());
-                storage.save(tasks.getAllTasks());
-                break;
-
+                return handleUnmark(arguments);
             case MARK:
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("Please specify a task number to mark.");
-                }
-                int markIndex = Parser.parseIndex(arguments);
-                Task markTask = tasks.get(markIndex);
-                markTask.markAsDone();
-                response.append("Impressive. You have completed the task:\n");
-                response.append(markTask.toString());
-                storage.save(tasks.getAllTasks());
-                break;
-
+                return handleMark(arguments);
             case TODO:
-                if (tasks.size() >= 100) {
-                    return "Cannot add more than 100 items";
-                }
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("OOPS!!! The description of a todo cannot be empty.");
-                }
-                Task newTodo = new Todo(arguments.trim());
-                tasks.add(newTodo);
-                response.append("Confirmed. I have added this to your schedule:\n");
-                response.append("  ").append(newTodo).append("\n");
-                response.append("Now you have ").append(tasks.size()).append(" tasks in the list.");
-                storage.save(tasks.getAllTasks());
-                break;
-
+                return handleTodo(arguments);
             case DEADLINE:
-                if (tasks.size() >= 100) {
-                    return "Cannot add more than 100 items";
-                }
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("OOPS!!! The description of a deadline cannot be empty.");
-                }
-                String[] parts = arguments.split(" /by ");
-                if (parts.length < 2) {
-                    throw new ChatbotExceptions("OOPS!!! The deadline cannot be empty.");
-                }
-                String description = parts[0].trim();
-                if (description.length() == 0) {
-                    throw new ChatbotExceptions("OOPS!!! The description of a deadline cannot be empty.");
-                }
-                String by = parts[1].trim();
-                Task newDeadline = new Deadline(description, by);
-                tasks.add(newDeadline);
-                response.append("Confirmed. I have added this to your schedule:\n");
-                response.append("  ").append(newDeadline).append("\n");
-                response.append("Now you have ").append(tasks.size()).append(" tasks in the list.");
-                storage.save(tasks.getAllTasks());
-                break;
-
+                return handleDeadline(arguments);
             case EVENT:
-                if (tasks.size() >= 100) {
-                    return "Cannot add more than 100 items";
-                }
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("OOPS!!! The description of a event cannot be empty.");
-                }
-                String[] eventParts = arguments.split(" /from ");
-                if (eventParts.length < 2) {
-                    throw new ChatbotExceptions("OOPS!!! The event cannot be empty.");
-                }
-                String eventDesc = eventParts[0].trim();
-                if (eventDesc.length() == 0) {
-                    throw new ChatbotExceptions("OOPS!!! The description of a event cannot be empty.");
-                }
-                String[] timeParts = eventParts[1].split(" /to ");
-                if (timeParts.length < 2) {
-                    throw new ChatbotExceptions("OOPS!!! The event time is missing.");
-                }
-                String from = timeParts[0].trim();
-                String to = timeParts[1].trim();
-                Task newEvent = new Event(eventDesc, from, to);
-                tasks.add(newEvent);
-                response.append("Confirmed. I have added this to your schedule:\n");
-                response.append("  ").append(newEvent).append("\n");
-                response.append("Now you have ").append(tasks.size()).append(" tasks in the list.");
-                storage.save(tasks.getAllTasks());
-                break;
-
+                return handleEvent(arguments);
             case DELETE:
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("Please specify a task number to delete.");
-                }
-                int deleteIndex = Parser.parseIndex(arguments);
-                Task removedTask = tasks.delete(deleteIndex);
-                response.append("I have removed that task. It no longer exists:\n");
-                response.append("  ").append(removedTask).append("\n");
-                response.append("Now you have ").append(tasks.size()).append(" tasks in the list.");
-                storage.save(tasks.getAllTasks());
-                break;
-
+                return handleDelete(arguments);
             case SCHEDULE:
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("Please specify a date to view the schedule.");
-                }
-                LocalDateTime scheduleDate = DateParser.parseDateTime(arguments);
-                LocalDate queryDate = scheduleDate.toLocalDate();
-
-                response.append("Tasks for ").append(queryDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")))
-                        .append(":\n");
-
-                String scheduledTasks = tasks.getAllTasks().stream()
-                        .filter(t -> {
-                            if (t instanceof Deadline) {
-                                return ((Deadline) t).by.toLocalDate().equals(queryDate);
-                            } else if (t instanceof Event) {
-                                Event e = (Event) t;
-                                return !queryDate.isBefore(e.from.toLocalDate())
-                                        && !queryDate.isAfter(e.to.toLocalDate());
-                            }
-                            return false;
-                        })
-                        .map(t -> {
-                            if (t instanceof Deadline) {
-                                Deadline d = (Deadline) t;
-                                return "  [D] " + d.description + " (due: "
-                                        + DateParser.formatDateTime(d.by) + ")\n";
-                            } else {
-                                Event e = (Event) t;
-                                return "  [E] " + e.description + " (from: "
-                                        + DateParser.formatDateTime(e.from) + " to: "
-                                        + DateParser.formatDateTime(e.to) + ")\n";
-                            }
-                        })
-                        .collect(Collectors.joining());
-
-                if (scheduledTasks.isEmpty()) {
-                    response.append("  No tasks scheduled for this date.");
-                } else {
-                    response.append(scheduledTasks);
-                }
-                break;
-
+                return handleSchedule(arguments);
             case FIND:
-                if (arguments.isEmpty()) {
-                    throw new ChatbotExceptions("Please specify a keyword to search for.");
-                }
-                String keyword = arguments.trim();
-                List<Task> matchingTasks = tasks.findTasks(keyword);
-
-                if (matchingTasks.isEmpty()) {
-                    throw new ChatbotExceptions("No tasks matching '" + keyword + "' found.");
-                }
-
-                response.append("Here are the matching tasks in your list:\n");
-                for (int i = 0; i < matchingTasks.size(); i++) {
-                    response.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
-                }
-                break;
-
+                return handleFind(arguments);
             default:
                 throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
-            return response.toString();
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();
         } catch (Exception e) {
             return "Something went wrong: " + e.getMessage();
         }
+    }
+
+    private String handleBye() {
+        return MSG_DISMISSED;
+    }
+
+    private String handleList() {
+        StringBuilder response = new StringBuilder();
+        response.append(MSG_GREETING);
+        response.append(MSG_LIST_HEADER);
+        for (int i = 0; i < tasks.size(); i++) {
+            response.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return response.toString();
+    }
+
+    private String handleUnmark(String arguments) throws ChatbotExceptions {
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_UNMARK_ERROR);
+        }
+        int taskNumber = Parser.parseIndex(arguments);
+        Task task = tasks.get(taskNumber);
+        task.markAsNotDone();
+        storage.save(tasks.getAllTasks());
+        return "OK, I've marked this task as not done yet:\n" + task.toString();
+    }
+
+    private String handleMark(String arguments) throws ChatbotExceptions {
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_MARK_ERROR);
+        }
+        int markIndex = Parser.parseIndex(arguments);
+        Task markTask = tasks.get(markIndex);
+        markTask.markAsDone();
+        storage.save(tasks.getAllTasks());
+        return "Impressive. You have completed the task:\n" + markTask.toString();
+    }
+
+    private String handleTodo(String arguments) throws ChatbotExceptions {
+        if (tasks.size() >= 100) {
+            return MSG_MAX_TASKS;
+        }
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_TODO_EMPTY);
+        }
+        Task newTodo = new Todo(arguments.trim());
+        tasks.add(newTodo);
+        storage.save(tasks.getAllTasks());
+        return formatAddResponse(newTodo);
+    }
+
+    private String handleDeadline(String arguments) throws ChatbotExceptions {
+        if (tasks.size() >= 100) {
+            return MSG_MAX_TASKS;
+        }
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_DEADLINE_EMPTY);
+        }
+        String[] parts = arguments.split(" /by ");
+        if (parts.length < 2) {
+            throw new ChatbotExceptions(MSG_DEADLINE_TIME_EMPTY);
+        }
+        String description = parts[0].trim();
+        if (description.isEmpty()) {
+            throw new ChatbotExceptions(MSG_DEADLINE_EMPTY);
+        }
+        String by = parts[1].trim();
+        Task newDeadline = new Deadline(description, by);
+        tasks.add(newDeadline);
+        storage.save(tasks.getAllTasks());
+        return formatAddResponse(newDeadline);
+    }
+
+    private String handleEvent(String arguments) throws ChatbotExceptions {
+        if (tasks.size() >= 100) {
+            return MSG_MAX_TASKS;
+        }
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_EVENT_EMPTY);
+        }
+        String[] eventParts = arguments.split(" /from ");
+        if (eventParts.length < 2) {
+            throw new ChatbotExceptions(MSG_EVENT_EMPTY);
+        }
+        String eventDesc = eventParts[0].trim();
+        if (eventDesc.isEmpty()) {
+            throw new ChatbotExceptions(MSG_EVENT_EMPTY);
+        }
+        String[] timeParts = eventParts[1].split(" /to ");
+        if (timeParts.length < 2) {
+            throw new ChatbotExceptions(MSG_EVENT_TIME_EMPTY);
+        }
+        String from = timeParts[0].trim();
+        String to = timeParts[1].trim();
+        Task newEvent = new Event(eventDesc, from, to);
+        tasks.add(newEvent);
+        storage.save(tasks.getAllTasks());
+        return formatAddResponse(newEvent);
+    }
+
+    private String handleDelete(String arguments) throws ChatbotExceptions {
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_DELETE_ERROR);
+        }
+        int deleteIndex = Parser.parseIndex(arguments);
+        Task removedTask = tasks.delete(deleteIndex);
+        storage.save(tasks.getAllTasks());
+        return "I have removed that task. It no longer exists:\n" + "  " + removedTask + "\n" + "Now you have " + tasks.size() + " tasks in the list.";
+    }
+
+    private String handleSchedule(String arguments) throws ChatbotExceptions {
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_SCHEDULE_ERROR);
+        }
+        LocalDateTime scheduleDate = DateParser.parseDateTime(arguments);
+        LocalDate queryDate = scheduleDate.toLocalDate();
+
+        StringBuilder response = new StringBuilder();
+        response.append("Tasks for ").append(queryDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")))
+                .append(":\n");
+
+        boolean found = false;
+        for (Task t : tasks.getAllTasks()) {
+            if (isTaskScheduledOnDate(t, queryDate)) {
+                response.append(formatScheduledTask(t));
+                found = true;
+            }
+        }
+        if (!found) {
+            response.append("  No tasks scheduled for this date.");
+        }
+        return response.toString();
+    }
+
+    private boolean isTaskScheduledOnDate(Task t, LocalDate queryDate) {
+        if (t instanceof Deadline) {
+            return ((Deadline) t).by.toLocalDate().equals(queryDate);
+        } else if (t instanceof Event) {
+            Event e = (Event) t;
+            return !queryDate.isBefore(e.from.toLocalDate()) && !queryDate.isAfter(e.to.toLocalDate());
+        }
+        return false;
+    }
+
+    private String formatScheduledTask(Task t) {
+        if (t instanceof Deadline) {
+            Deadline d = (Deadline) t;
+            return "  [D] " + d.description + " (due: " + DateParser.formatDateTime(d.by) + ")\n";
+        } else if (t instanceof Event) {
+            Event e = (Event) t;
+            return "  [E] " + e.description + " (from: " + DateParser.formatDateTime(e.from) + " to: "
+                    + DateParser.formatDateTime(e.to) + ")\n";
+        }
+        return "";
+    }
+
+    private String handleFind(String arguments) throws ChatbotExceptions {
+        if (arguments.isEmpty()) {
+            throw new ChatbotExceptions(MSG_FIND_ERROR);
+        }
+        String keyword = arguments.trim();
+        List<Task> matchingTasks = tasks.findTasks(keyword);
+
+        if (matchingTasks.isEmpty()) {
+            throw new ChatbotExceptions("No tasks matching '" + keyword + "' found.");
+        }
+
+        StringBuilder response = new StringBuilder();
+        response.append("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            response.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
+        }
+        return response.toString();
+    }
+
+    private String formatAddResponse(Task task) {
+        return "Confirmed. I have added this to your schedule:\n"
+                + "  " + task + "\n"
+                + "Now you have " + tasks.size()
+                + " tasks in the list.";
     }
 
     /**

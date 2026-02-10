@@ -30,6 +30,9 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) throws ChatbotExceptions {
         super(description);
+        assert description != null : "Event description cannot be null";
+        assert from != null : "Event 'from' date cannot be null";
+        assert to != null : "Event 'to' date cannot be null";
         this.from = DateParser.parseDateTime(from);
         this.to = DateParser.parseDateTime(to);
     }

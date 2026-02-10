@@ -8,6 +8,10 @@ package gojo;
  * </p>
  */
 public class Parser {
+    private static final String MSG_UNKNOWN_COMMAND = "OOPS!!! I'm sorry, but I don't know what that means :-(";
+    private static final String MSG_INVALID_INDEX = "OOPS!!! The task number must be an integer.";
+    private static final int DISPLAY_INDEX_OFFSET = 1;
+
     /**
      * Private constructor to prevent instantiation of utility class.
      */
@@ -26,13 +30,14 @@ public class Parser {
      * @throws ChatbotExceptions If the command is unknown or invalid.
      */
     public static Command parseCommand(String fullCommand) throws ChatbotExceptions {
+        assert fullCommand != null : "Command string cannot be null";
         // Split input into command word and the rest
         String[] parts = fullCommand.trim().split(" ", 2);
         String commandStr = parts[0].toUpperCase();
         try {
             return Command.valueOf(commandStr);
         } catch (IllegalArgumentException e) {
-            throw new ChatbotExceptions("OOPS!!! I'm sorry, but I don't know what that means :-(");
+            throw new ChatbotExceptions(MSG_UNKNOWN_COMMAND);
         }
     }
 
@@ -43,6 +48,7 @@ public class Parser {
      * @return The arguments string, or empty string if no arguments are provided.
      */
     public static String getArguments(String fullCommand) {
+        assert fullCommand != null : "Command string cannot be null";
         String[] parts = fullCommand.trim().split(" ", 2);
         if (parts.length < 2) {
             return "";
@@ -62,11 +68,12 @@ public class Parser {
      * @throws ChatbotExceptions If the argument is not a valid integer.
      */
     public static int parseIndex(String args) throws ChatbotExceptions {
+        assert args != null : "Arguments cannot be null";
         try {
             // Remove non-digit characters and parse
-            return Integer.parseInt(args.replaceAll("\\D+", "")) - 1;
+            return Integer.parseInt(args.replaceAll("\\D+", "")) - DISPLAY_INDEX_OFFSET;
         } catch (NumberFormatException e) {
-            throw new ChatbotExceptions("OOPS!!! The task number must be an integer.");
+            throw new ChatbotExceptions(MSG_INVALID_INDEX);
         }
     }
 }
