@@ -131,6 +131,7 @@ public class UI {
      * @param messages The message(s) to show.
      */
     public void showMessage(String... messages) {
+        assert messages != null : "Messages cannot be null";
         for (String message : messages) {
             System.out.println(message);
         }
@@ -142,6 +143,7 @@ public class UI {
      * @param messages The error message(s) to show.
      */
     public void showError(String... messages) {
+        assert messages != null : "Error messages cannot be null";
         for (String message : messages) {
             System.out.println(message);
         }

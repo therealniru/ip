@@ -79,22 +79,22 @@ public class Storage {
         Task task = null;
         // Determine task type and create appropriate object
         switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                // Deadline format includes additional "by" date
-                String by = parts[3];
-                task = new Deadline(description, by);
-                break;
-            case "E":
-                // Event format includes additional "from" and "to" times
-                String from = parts[3];
-                String to = parts[4];
-                task = new Event(description, from, to);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            // Deadline format includes additional "by" date
+            String by = parts[3];
+            task = new Deadline(description, by);
+            break;
+        case "E":
+            // Event format includes additional "from" and "to" times
+            String from = parts[3];
+            String to = parts[4];
+            task = new Event(description, from, to);
+            break;
+        default:
+            throw new IllegalStateException("Unexpected value: " + type);
         }
 
         if (task != null && isDone) {
