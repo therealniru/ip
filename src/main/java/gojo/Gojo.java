@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * The entry point for the gojo.Gojo chatbot application.
@@ -73,28 +75,28 @@ public class Gojo {
             String arguments = Parser.getArguments(input);
 
             switch (command) {
-            case BYE:
-                return handleBye();
-            case LIST:
-                return handleList();
-            case UNMARK:
-                return handleUnmark(arguments);
-            case MARK:
-                return handleMark(arguments);
-            case TODO:
-                return handleTodo(arguments);
-            case DEADLINE:
-                return handleDeadline(arguments);
-            case EVENT:
-                return handleEvent(arguments);
-            case DELETE:
-                return handleDelete(arguments);
-            case SCHEDULE:
-                return handleSchedule(arguments);
-            case FIND:
-                return handleFind(arguments);
-            default:
-                throw new IllegalStateException("I do not understand that command. Please be precise.");
+                case BYE:
+                    return handleBye();
+                case LIST:
+                    return handleList();
+                case UNMARK:
+                    return handleUnmark(arguments);
+                case MARK:
+                    return handleMark(arguments);
+                case TODO:
+                    return handleTodo(arguments);
+                case DEADLINE:
+                    return handleDeadline(arguments);
+                case EVENT:
+                    return handleEvent(arguments);
+                case DELETE:
+                    return handleDelete(arguments);
+                case SCHEDULE:
+                    return handleSchedule(arguments);
+                case FIND:
+                    return handleFind(arguments);
+                default:
+                    throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();
@@ -111,9 +113,14 @@ public class Gojo {
         StringBuilder response = new StringBuilder();
         response.append(MSG_GREETING);
         response.append(MSG_LIST_HEADER);
-        for (int i = 0; i < tasks.size(); i++) {
-            response.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
-        }
+        IntStream.range(0, tasks.size())
+                .forEach(i -> {
+                    try {
+                        response.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+                    } catch (ChatbotExceptions e) {
+                        e.printStackTrace();
+                    }
+                });
         return response.toString();
     }
 
@@ -208,7 +215,8 @@ public class Gojo {
         int deleteIndex = Parser.parseIndex(arguments);
         Task removedTask = tasks.delete(deleteIndex);
         storage.save(tasks.getAllTasks());
-        return "I have removed that task. It no longer exists:\n" + "  " + removedTask + "\n" + "Now you have " + tasks.size() + " tasks in the list.";
+        return "I have removed that task. It no longer exists:\n" + "  " + removedTask + "\n" + "Now you have "
+                + tasks.size() + " tasks in the list.";
     }
 
     private String handleSchedule(String arguments) throws ChatbotExceptions {
@@ -222,14 +230,14 @@ public class Gojo {
         response.append("Tasks for ").append(queryDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")))
                 .append(":\n");
 
-        boolean found = false;
-        for (Task t : tasks.getAllTasks()) {
-            if (isTaskScheduledOnDate(t, queryDate)) {
-                response.append(formatScheduledTask(t));
-                found = true;
-            }
-        }
-        if (!found) {
+        String scheduledTasks = tasks.getAllTasks().stream()
+                .filter(t -> isTaskScheduledOnDate(t, queryDate))
+                .map(this::formatScheduledTask)
+                .collect(Collectors.joining());
+
+        if (!scheduledTasks.isEmpty()) {
+            response.append(scheduledTasks);
+        } else {
             response.append("  No tasks scheduled for this date.");
         }
         return response.toString();
@@ -270,9 +278,8 @@ public class Gojo {
 
         StringBuilder response = new StringBuilder();
         response.append("Here are the matching tasks in your list:\n");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            response.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
-        }
+        IntStream.range(0, matchingTasks.size())
+                .forEach(i -> response.append(i + 1).append(".").append(matchingTasks.get(i)).append("\n"));
         return response.toString();
     }
 
