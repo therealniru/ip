@@ -24,7 +24,8 @@ public class Gojo {
     // Path to the file where tasks are persisted.
     private static final String FILE_PATH = "data/gojo.txt";
     private static final String MSG_DISMISSED = "Dismissed.";
-    private static final String MSG_GREETING = "Greetings. I am Gojo. I am here to manage your tasks. You may begin.\n\n";
+    private static final String MSG_GREETING = "Greetings. I am Gojo. I am here to manage your tasks. "
+            + "You may begin.\n\n";
     private static final String MSG_LIST_HEADER = "Here are the tasks in your list:\n";
     private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark.";
     private static final String MSG_MARK_ERROR = "Please specify a task number to mark.";

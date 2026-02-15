@@ -3,14 +3,13 @@ package gojo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.UncheckedIOException;
 
 /**
  * Handles loading tasks from the file and saving tasks in the file.
@@ -48,15 +47,15 @@ public class Storage {
         }
         try {
             return Files.lines(Paths.get(filePath))
-                    .map(line -> {
-                        try {
-                            return parseTaskFromLine(line);
-                        } catch (Exception e) {
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                .map(line -> {
+                    try {
+                        return parseTaskFromLine(line);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         } catch (IOException e) {
             System.out.println("Error loading data from file: " + e.getMessage());
             return new ArrayList<>();
@@ -109,14 +108,14 @@ public class Storage {
         try {
             FileWriter writer = new FileWriter(filePath);
             tasks.stream()
-                    .map(task -> task.toFileFormat() + System.lineSeparator())
-                    .forEach(line -> {
-                        try {
-                            writer.write(line);
-                        } catch (IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    });
+                .map(task -> task.toFileFormat() + System.lineSeparator())
+                .forEach(line -> {
+                    try {
+                        writer.write(line);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                });
             writer.close();
         } catch (IOException | UncheckedIOException e) {
             throw new ChatbotExceptions("Error saving data: " + e.getMessage());
