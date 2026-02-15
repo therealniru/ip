@@ -159,6 +159,9 @@ public class Gojo {
             throw new ChatbotExceptions(MSG_TODO_EMPTY);
         }
         Task newTodo = new Todo(arguments.trim());
+        if (tasks.isDuplicate(newTodo)) {
+            throw new ChatbotExceptions("My Six Eyes tell me this task already exists in your infinite void.");
+        }
         tasks.add(newTodo);
         storage.save(tasks.getAllTasks());
         return formatAddResponse(newTodo);
@@ -181,7 +184,18 @@ public class Gojo {
             throw new ChatbotExceptions(MSG_DEADLINE_EMPTY);
         }
         String by = parts[1].trim();
+
+        // Validate date format strictly by attempting to parse it
+        try {
+            DateParser.parseDateTime(by);
+        } catch (ChatbotExceptions e) {
+            throw new ChatbotExceptions("Invalid deadline date. Use d/M/yyyy HHmm. " + e.getMessage());
+        }
+
         Task newDeadline = new Deadline(description, by);
+        if (tasks.isDuplicate(newDeadline)) {
+            throw new ChatbotExceptions("My Six Eyes tell me this task already exists in your infinite void.");
+        }
         tasks.add(newDeadline);
         storage.save(tasks.getAllTasks());
         return formatAddResponse(newDeadline);
@@ -209,7 +223,22 @@ public class Gojo {
         }
         String from = timeParts[0].trim();
         String to = timeParts[1].trim();
+
+        // Validate logic: Start time must be before end time
+        try {
+            LocalDateTime start = DateParser.parseDateTime(from);
+            LocalDateTime end = DateParser.parseDateTime(to);
+            if (!start.isBefore(end)) {
+                throw new ChatbotExceptions("Time flows forward. Start time must be before end time.");
+            }
+        } catch (ChatbotExceptions e) {
+            throw new ChatbotExceptions("Invalid event dates. " + e.getMessage());
+        }
+
         Task newEvent = new Event(eventDesc, from, to);
+        if (tasks.isDuplicate(newEvent)) {
+            throw new ChatbotExceptions("My Six Eyes tell me this task already exists in your infinite void.");
+        }
         tasks.add(newEvent);
         storage.save(tasks.getAllTasks());
         return formatAddResponse(newEvent);

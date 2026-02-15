@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class DateParser {
         // Try parsing with time
         for (String format : DATE_TIME_FORMATS) {
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format)
+                        .withResolverStyle(ResolverStyle.STRICT);
                 return LocalDateTime.parse(trimmedInput, formatter);
             } catch (DateTimeParseException ignored) {
                 // Try next format
@@ -68,7 +70,8 @@ public class DateParser {
         // Try parsing without time (default to 23:59)
         for (String format : DATE_ONLY_FORMATS) {
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format)
+                        .withResolverStyle(ResolverStyle.STRICT);
                 LocalDate date = LocalDate.parse(trimmedInput, formatter);
                 return date.atTime(23, 59);
             } catch (DateTimeParseException ignored) {

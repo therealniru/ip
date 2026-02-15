@@ -31,40 +31,40 @@ public class Parser {
      */
     public static Command parseCommand(String fullCommand) throws ChatbotExceptions {
         assert fullCommand != null : "Command string cannot be null";
-        // Split input into command word and the rest
-        String[] parts = fullCommand.trim().split(" ", 2);
+        // Split input into command word and the rest, handling multiple spaces/tabs
+        String[] parts = fullCommand.trim().split("\\s+", 2);
         String commandStr = parts[0].toUpperCase();
 
         switch (commandStr) {
-        case "T":
-            commandStr = "TODO";
-            break;
-        case "D":
-            commandStr = "DEADLINE";
-            break;
-        case "E":
-            commandStr = "EVENT";
-            break;
-        case "L":
-            commandStr = "LIST";
-            break;
-        case "M":
-            commandStr = "MARK";
-            break;
-        case "U":
-            commandStr = "UNMARK";
-            break;
-        case "B":
-            commandStr = "BYE";
-            break;
-        case "S":
-            commandStr = "SCHEDULE";
-            break;
-        case "F":
-            commandStr = "FIND";
-            break;
-        default:
-            break;
+            case "T":
+                commandStr = "TODO";
+                break;
+            case "D":
+                commandStr = "DEADLINE";
+                break;
+            case "E":
+                commandStr = "EVENT";
+                break;
+            case "L":
+                commandStr = "LIST";
+                break;
+            case "M":
+                commandStr = "MARK";
+                break;
+            case "U":
+                commandStr = "UNMARK";
+                break;
+            case "B":
+                commandStr = "BYE";
+                break;
+            case "S":
+                commandStr = "SCHEDULE";
+                break;
+            case "F":
+                commandStr = "FIND";
+                break;
+            default:
+                break;
         }
 
         try {
@@ -82,7 +82,7 @@ public class Parser {
      */
     public static String getArguments(String fullCommand) {
         assert fullCommand != null : "Command string cannot be null";
-        String[] parts = fullCommand.trim().split(" ", 2);
+        String[] parts = fullCommand.trim().split("\\s+", 2);
         if (parts.length < 2) {
             return "";
         }
