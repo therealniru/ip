@@ -107,7 +107,7 @@ public class MainWindow extends AnchorPane {
         gojo = g;
         // Show welcome message
         dialogContainer.getChildren().add(
-                DialogBox.getGojoDialog("Hi, I'm Gojo Saturo, your chatbot. Domain Expansion : Unfinished Checklist",
+                DialogBox.getGojoDialog("Yo! I'm Gojo Satoru. Welcome to my Domain Expansion: Unfinished Checklist.",
                         gojoImage));
     }
 
