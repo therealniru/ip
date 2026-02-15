@@ -23,18 +23,18 @@ public class Gojo {
     // Path to the file where tasks are persisted.
     private static final String FILE_PATH = "data/gojo.txt";
     private static final String MSG_DISMISSED = "Dismissed.";
-    private static final String MSG_LIST_HEADER = "Here are the tasks in your list:";
-    private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark.";
-    private static final String MSG_MARK_ERROR = "Please specify a task number to mark.";
-    private static final String MSG_TODO_EMPTY = "OOPS!!! The description of a todo cannot be empty.";
-    private static final String MSG_DEADLINE_EMPTY = "OOPS!!! The description of a deadline cannot be empty.";
-    private static final String MSG_DEADLINE_TIME_EMPTY = "OOPS!!! The deadline cannot be empty.";
-    private static final String MSG_EVENT_EMPTY = "OOPS!!! The description of a event cannot be empty.";
-    private static final String MSG_EVENT_TIME_EMPTY = "OOPS!!! The event time is missing.";
-    private static final String MSG_DELETE_ERROR = "Please specify a task number to delete.";
+    private static final String MSG_LIST_HEADER = "My Six Eyes see everything. Here are your tasks:";
+    private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark. Don't make me repeat myself.";
+    private static final String MSG_MARK_ERROR = "Please specify a task number to mark. Focus.";
+    private static final String MSG_TODO_EMPTY = "OOPS!!! A todo cannot be empty. Are you failing to control your cursed energy?";
+    private static final String MSG_DEADLINE_EMPTY = "OOPS!!! Intricate details matter. The description cannot be empty.";
+    private static final String MSG_DEADLINE_TIME_EMPTY = "OOPS!!! The deadline cannot be empty. Time is relative, but not optional.";
+    private static final String MSG_EVENT_EMPTY = "OOPS!!! The description of an event cannot be empty.";
+    private static final String MSG_EVENT_TIME_EMPTY = "OOPS!!! The event time is missing. A sorcerer must be punctual.";
+    private static final String MSG_DELETE_ERROR = "Please specify a task number to delete. Exorcise it properly.";
     private static final String MSG_SCHEDULE_ERROR = "Please specify a date to view the schedule.";
-    private static final String MSG_FIND_ERROR = "Please specify a keyword to search for.";
-    private static final String MSG_MAX_TASKS = "Cannot add more than 100 items";
+    private static final String MSG_FIND_ERROR = "Please specify a keyword to search for. Use your eyes.";
+    private static final String MSG_MAX_TASKS = "Cannot add more than 100 items. Your domain is too crowded.";
 
     // The list of tasks currently managed by the application.
     private TaskList tasks;
@@ -73,28 +73,28 @@ public class Gojo {
             String arguments = Parser.getArguments(input);
 
             switch (command) {
-            case BYE:
-                return handleBye();
-            case LIST:
-                return handleList();
-            case UNMARK:
-                return handleUnmark(arguments);
-            case MARK:
-                return handleMark(arguments);
-            case TODO:
-                return handleTodo(arguments);
-            case DEADLINE:
-                return handleDeadline(arguments);
-            case EVENT:
-                return handleEvent(arguments);
-            case DELETE:
-                return handleDelete(arguments);
-            case SCHEDULE:
-                return handleSchedule(arguments);
-            case FIND:
-                return handleFind(arguments);
-            default:
-                throw new IllegalStateException("I do not understand that command. Please be precise.");
+                case BYE:
+                    return handleBye();
+                case LIST:
+                    return handleList();
+                case UNMARK:
+                    return handleUnmark(arguments);
+                case MARK:
+                    return handleMark(arguments);
+                case TODO:
+                    return handleTodo(arguments);
+                case DEADLINE:
+                    return handleDeadline(arguments);
+                case EVENT:
+                    return handleEvent(arguments);
+                case DELETE:
+                    return handleDelete(arguments);
+                case SCHEDULE:
+                    return handleSchedule(arguments);
+                case FIND:
+                    return handleFind(arguments);
+                default:
+                    throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();
@@ -104,7 +104,7 @@ public class Gojo {
     }
 
     private String handleBye() {
-        return "Bye, until next time - Stay Limitless \u267E\uFE0F";
+        return "Bye! Don't let the curses bite. Stay Limitless \u267E\uFE0F";
     }
 
     private String handleList() {
@@ -135,7 +135,7 @@ public class Gojo {
         Task task = tasks.get(taskNumber);
         task.markAsNotDone();
         storage.save(tasks.getAllTasks());
-        return "OK, I've marked this task as not done yet:\n" + task.toString();
+        return "Reversing Cursed Technique. Task marked as not done:\n" + task.toString();
     }
 
     private String handleMark(String arguments) throws ChatbotExceptions {
@@ -147,7 +147,7 @@ public class Gojo {
         Task markTask = tasks.get(markIndex);
         markTask.markAsDone();
         storage.save(tasks.getAllTasks());
-        return "Impressive. You have completed the task:\n" + markTask.toString();
+        return "Hollow... Purple! Task obliterated (completed):\n" + markTask.toString();
     }
 
     private String handleTodo(String arguments) throws ChatbotExceptions {
@@ -304,7 +304,7 @@ public class Gojo {
     }
 
     private String formatAddResponse(Task task) {
-        return "Got it. I've added this task:\n"
+        return "I've added this to the Infinite Void. Don't get lost:\n"
                 + "  " + task + "\n"
                 + "Now you have " + tasks.size()
                 + " tasks in the list.";
