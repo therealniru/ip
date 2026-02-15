@@ -1,7 +1,5 @@
 package gojo;
 
-import java.time.LocalDateTime;
-
 /**
  * Represents an event task in the Gojo application.
  * An event task has a description and occurs within a specific time range
@@ -12,29 +10,27 @@ public class Event extends Task {
     /**
      * The start time of the event.
      */
-    protected LocalDateTime from;
+    protected String from;
 
     /**
      * The end time of the event.
      */
-    protected LocalDateTime to;
+    protected String to;
 
     /**
      * Constructs a new Event task.
      *
      * @param description The description of the event.
-     * @param from        The start time of the event (e.g., "2/12/2019 1400",
-     *                    "tomorrow").
+     * @param from        The start time of the event.
      * @param to          The end time of the event.
-     * @throws ChatbotExceptions If the date format is invalid.
      */
-    public Event(String description, String from, String to) throws ChatbotExceptions {
+    public Event(String description, String from, String to) {
         super(description);
         assert description != null : "Event description cannot be null";
         assert from != null : "Event 'from' date cannot be null";
         assert to != null : "Event 'to' date cannot be null";
-        this.from = DateParser.parseDateTime(from);
-        this.to = DateParser.parseDateTime(to);
+        this.from = from;
+        this.to = to;
     }
 
     /**
@@ -45,8 +41,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + DateParser.formatDateTime(from) + " to: "
-                + DateParser.formatDateTime(to) + ")";
+        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
     }
 
     /**
@@ -57,6 +52,6 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "E" + super.toFileFormat() + " | " + DateParser.toFileString(from) + " | " + DateParser.toFileString(to);
+        return "E" + super.toFileFormat() + " | " + from + " | " + to;
     }
 }

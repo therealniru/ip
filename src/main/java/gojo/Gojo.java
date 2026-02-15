@@ -1,4 +1,3 @@
-
 package gojo;
 
 import java.time.LocalDate;
@@ -24,8 +23,7 @@ public class Gojo {
     // Path to the file where tasks are persisted.
     private static final String FILE_PATH = "data/gojo.txt";
     private static final String MSG_DISMISSED = "Dismissed.";
-    private static final String MSG_GREETING = "Greetings. I am Gojo. I am here to manage your tasks. You may begin.\n\n";
-    private static final String MSG_LIST_HEADER = "Here are the tasks in your list:\n";
+    private static final String MSG_LIST_HEADER = "Here are the tasks in your list:";
     private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark.";
     private static final String MSG_MARK_ERROR = "Please specify a task number to mark.";
     private static final String MSG_TODO_EMPTY = "OOPS!!! The description of a todo cannot be empty.";
@@ -106,17 +104,22 @@ public class Gojo {
     }
 
     private String handleBye() {
-        return MSG_DISMISSED;
+        return "Bye, until next time - Stay Limitless \u267E\uFE0F";
     }
 
     private String handleList() {
         StringBuilder response = new StringBuilder();
-        response.append(MSG_GREETING);
         response.append(MSG_LIST_HEADER);
+        if (tasks.size() > 0) {
+            response.append("\n");
+        }
         IntStream.range(0, tasks.size())
                 .forEach(i -> {
                     try {
-                        response.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+                        response.append(i + 1).append(". ").append(tasks.get(i));
+                        if (i < tasks.size() - 1) {
+                            response.append("\n");
+                        }
                     } catch (ChatbotExceptions e) {
                         e.printStackTrace();
                     }
@@ -220,7 +223,7 @@ public class Gojo {
         int deleteIndex = Parser.parseIndex(arguments);
         Task removedTask = tasks.delete(deleteIndex);
         storage.save(tasks.getAllTasks());
-        return "I have removed that task. It no longer exists:\n" + "  " + removedTask + "\n" + "Now you have "
+        return "Noted. I've removed this task:\n" + "  " + removedTask + "\n" + "Now you have "
                 + tasks.size() + " tasks in the list.";
     }
 
@@ -254,7 +257,13 @@ public class Gojo {
             return ((Deadline) t).by.toLocalDate().equals(queryDate);
         } else if (t instanceof Event) {
             Event e = (Event) t;
-            return !queryDate.isBefore(e.from.toLocalDate()) && !queryDate.isAfter(e.to.toLocalDate());
+            try {
+                LocalDateTime from = DateParser.parseDateTime(e.from);
+                LocalDateTime to = DateParser.parseDateTime(e.to);
+                return !queryDate.isBefore(from.toLocalDate()) && !queryDate.isAfter(to.toLocalDate());
+            } catch (ChatbotExceptions ex) {
+                return false;
+            }
         }
         return false;
     }
@@ -265,8 +274,7 @@ public class Gojo {
             return "  [D] " + d.description + " (due: " + DateParser.formatDateTime(d.by) + ")\n";
         } else if (t instanceof Event) {
             Event e = (Event) t;
-            return "  [E] " + e.description + " (from: " + DateParser.formatDateTime(e.from) + " to: "
-                    + DateParser.formatDateTime(e.to) + ")\n";
+            return "  [E] " + e.description + " (from: " + e.from + " to: " + e.to + ")\n";
         }
         return "";
     }
@@ -286,12 +294,17 @@ public class Gojo {
         StringBuilder response = new StringBuilder();
         response.append("Here are the matching tasks in your list:\n");
         IntStream.range(0, matchingTasks.size())
-                .forEach(i -> response.append(i + 1).append(".").append(matchingTasks.get(i)).append("\n"));
+                .forEach(i -> {
+                    response.append(i + 1).append(".").append(matchingTasks.get(i));
+                    if (i < matchingTasks.size() - 1) {
+                        response.append("\n");
+                    }
+                });
         return response.toString();
     }
 
     private String formatAddResponse(Task task) {
-        return "Confirmed. I have added this to your schedule:\n"
+        return "Got it. I've added this task:\n"
                 + "  " + task + "\n"
                 + "Now you have " + tasks.size()
                 + " tasks in the list.";
@@ -324,7 +337,6 @@ public class Gojo {
                 // control flow
                 Command command = Parser.parseCommand(input);
                 if (command == Command.BYE) {
-                    ui.showLine();
                     return;
                 }
 

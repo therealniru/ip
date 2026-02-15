@@ -101,6 +101,7 @@ public class UI {
         System.out.println(WELCOME_GREETING);
         System.out.println(WELCOME_DOMAIN);
         System.out.println(WELCOME_PROMPT);
+        this.showLine();
     }
 
     /**

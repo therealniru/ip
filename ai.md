@@ -1,3 +1,3 @@
 # AI Usage Declaration
 
-This project used ChatGPT and Google AI for debugging assistance.
+This project used ChatGPT and Google AI for debugging assistance and GUI.

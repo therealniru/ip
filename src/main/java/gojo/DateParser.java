@@ -87,6 +87,9 @@ public class DateParser {
      */
     public static String formatDateTime(LocalDateTime date) {
         assert date != null : "LocalDateTime object cannot be null";
+        if (date.toLocalTime().equals(LocalTime.of(23, 59))) {
+            return date.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        }
         return date.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm"));
     }
 

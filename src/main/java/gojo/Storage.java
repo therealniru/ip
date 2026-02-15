@@ -3,14 +3,13 @@ package gojo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.UncheckedIOException;
 
 /**
  * Handles loading tasks from the file and saving tasks in the file.
@@ -107,7 +106,11 @@ public class Storage {
     public void save(List<Task> tasks) throws ChatbotExceptions {
         assert tasks != null : "Tasks list cannot be null";
         try {
-            FileWriter writer = new FileWriter(filePath);
+            File file = new File(filePath);
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();
+            }
+            FileWriter writer = new FileWriter(file);
             tasks.stream()
                     .map(task -> task.toFileFormat() + System.lineSeparator())
                     .forEach(line -> {
