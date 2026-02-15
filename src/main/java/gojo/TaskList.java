@@ -103,4 +103,14 @@ public class TaskList {
                 .filter(task -> task.description.contains(keyword))
                 .collect(java.util.stream.Collectors.toList());
     }
+
+    /**
+     * Checks if a task with the same description and parameters already exists.
+     *
+     * @param task The task to check.
+     * @return true if a duplicate exists, false otherwise.
+     */
+    public boolean isDuplicate(Task task) {
+        return tasks.stream().anyMatch(t -> t.toString().equals(task.toString()));
+    }
 }
