@@ -1,9 +1,12 @@
-/* The Main Window Background - Deep Void Grey */
+/* The Main Window Background */
 .root {
-    -fx-background-color: #121212;
+    -fx-background-image: url("../images/background.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }
 
-/* The Chat Area - slightly lighter to differentiate */
+/* The Chat Area - slightly transparent */
 .scroll-pane {
     -fx-background: transparent;
     -fx-background-color: transparent;
@@ -13,47 +16,69 @@
     -fx-background-color: transparent;
 }
 
-/* User Dialog Bubble - Clean White/Grey (Student Uniform) */
+/* User Dialog Bubble - Soft Red/Salmon */
 .dialog-box-user {
-    -fx-background-color: #E0E0E0;
-    -fx-background-radius: 15;
-    -fx-padding: 10;
-    -fx-text-fill: black;
-    -fx-font-family: "Arial";
-    -fx-font-size: 12px;
+    -fx-background-color: #FF6B6B;
+    -fx-background-radius: 20;
+    -fx-padding: 12;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Semibold", "Verdana", sans-serif;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);
 }
 
-/* Gojo Dialog Bubble - Deep Infinite Purple */
+/* Gojo Dialog Bubble - Mystical Purple */
 .dialog-box-gojo {
-    -fx-background-color: #6A0DAD;
-    /* Purple */
-    -fx-background-radius: 15;
-    -fx-padding: 10;
+    -fx-background-color: #8A2BE2;
+    /* BlueViolet */
+    -fx-background-radius: 20;
+    -fx-padding: 12;
     -fx-text-fill: white;
-    -fx-font-family: "Arial";
-    -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-family: "Segoe UI Semibold", "Verdana", sans-serif;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 8, 0, 0, 2);
 }
 
-/* The Input Field - Sleek and dark */
-.text-field {
-    -fx-background-color: #2C2C2C;
+/* Error Dialog Bubble - Intense Crimson Red */
+.dialog-box-error {
+    -fx-background-color: #DC143C;
+    /* Crimson */
+    -fx-background-radius: 20;
+    -fx-padding: 12;
     -fx-text-fill: white;
-    -fx-prompt-text-fill: #888888;
-    -fx-background-radius: 5;
-    -fx-border-color: #444444;
-    -fx-border-radius: 5;
+    -fx-font-family: "Segoe UI Bold", "Verdana", sans-serif;
+    -fx-font-size: 13px;
+    -fx-border-color: #FF0000;
+    -fx-border-width: 2px;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 0, 0, 0.5), 10, 0, 0, 0);
+}
+
+/* The Input Field - Semi-transparent dark */
+.text-field {
+    -fx-background-color: rgba(30, 30, 30, 0.8);
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #AAAAAA;
+    -fx-background-radius: 20;
+    -fx-border-color: #8A2BE2;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20;
+    -fx-padding: 10;
 }
 
 /* The Send Button - "Cursed Technique Blue" */
 .button {
-    -fx-background-color: #007ACC;
+    -fx-background-color: #4169E1;
+    /* RoyalBlue */
     -fx-text-fill: white;
-    -fx-background-radius: 5;
+    -fx-background-radius: 20;
     -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
 }
 
 .button:hover {
-    -fx-background-color: #005F9E;
-    /* Darker blue on hover */
+    -fx-background-color: #1E90FF;
+    /* DodgerBlue */
+    -fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.6), 10, 0, 0, 0);
 }
