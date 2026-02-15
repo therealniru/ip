@@ -13,17 +13,15 @@
         spacing="10">
 
     <children>
-<<<<<<< HEAD
 
         <!-- Chat bubble text -->
+
         <Label
                 fx:id="dialog"
                 wrapText="true"
                 textOverrun="CLIP"
-                style="
-                    -fx-padding: 14;
-                    -fx-background-radius: 18;
-                " />
+                style="-fx-padding: 10; -fx-background-radius: 15; -fx-background-color: #D8BFD8;"
+                />
 
         <!-- Profile picture -->
         <ImageView
@@ -31,11 +29,6 @@
                 fitWidth="99"
                 fitHeight="99"
                 preserveRatio="true" />
-
-=======
-        <Label fx:id="dialog" maxHeight="Infinity" minHeight="-Infinity" text="Label" wrapText="true" />
-        <ImageView fx:id="displayPicture" fitHeight="99.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="false" />
->>>>>>> master
     </children>
 
     <padding>

@@ -120,9 +120,17 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = gojo.getResponse(input);
+
+        DialogBox gojoDialog;
+        if (response.startsWith("OOPS!!!") || response.startsWith("Something went wrong:")) {
+            gojoDialog = DialogBox.getErrorDialog(response, gojoImage);
+        } else {
+            gojoDialog = DialogBox.getGojoDialog(response, gojoImage);
+        }
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getGojoDialog(response, gojoImage));
+                gojoDialog);
         userInput.clear();
 
         if (input.trim().equalsIgnoreCase("bye")) {
