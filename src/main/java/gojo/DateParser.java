@@ -22,17 +22,17 @@ public class DateParser {
      */
     // List of supported date-time formats
     private static final List<String> DATE_TIME_FORMATS = Arrays.asList(
-            "d/M/yyyy HHmm",
-            "yyyy-MM-dd HHmm",
-            "d-M-yyyy HHmm"); // For parity if needed
+            "d/M/uuuu HHmm",
+            "uuuu-MM-dd HHmm",
+            "d-M-uuuu HHmm"); // For parity if needed
 
     // List of supported date-only formats (default time will be set)
 
     private static final List<String> DATE_ONLY_FORMATS = Arrays.asList(
-            "d/M/yyyy",
-            "yyyy-MM-dd",
-            "d-M-yyyy",
-            "MMM d yyyy");
+            "d/M/uuuu",
+            "uuuu-MM-dd",
+            "d-M-uuuu",
+            "MMM d uuuu");
 
     /**
      * Parses a string input into a LocalDateTime object.
@@ -103,6 +103,6 @@ public class DateParser {
      * @return A formatted string (ISO-8601 like pattern preferred for stability).
      */
     public static String toFileString(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+        return dateTime.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm"));
     }
 }
