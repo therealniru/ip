@@ -286,13 +286,9 @@ public class Gojo {
             return ((Deadline) t).by.toLocalDate().equals(queryDate);
         } else if (t instanceof Event) {
             Event e = (Event) t;
-            try {
-                LocalDateTime from = DateParser.parseDateTime(e.from);
-                LocalDateTime to = DateParser.parseDateTime(e.to);
-                return !queryDate.isBefore(from.toLocalDate()) && !queryDate.isAfter(to.toLocalDate());
-            } catch (ChatbotExceptions ex) {
-                return false;
-            }
+            // The 'from' and 'to' fields of Event are already LocalDateTime objects.
+            // We just need to compare their LocalDate parts with the queryDate.
+            return !queryDate.isBefore(e.from.toLocalDate()) && !queryDate.isAfter(e.to.toLocalDate());
         }
         return false;
     }
@@ -303,7 +299,8 @@ public class Gojo {
             return "  [D] " + d.description + " (due: " + DateParser.formatDateTime(d.by) + ")\n";
         } else if (t instanceof Event) {
             Event e = (Event) t;
-            return "  [E] " + e.description + " (from: " + e.from + " to: " + e.to + ")\n";
+            return "  [E] " + e.description + " (from: " + DateParser.formatDateTime(e.from) + " to: "
+                    + DateParser.formatDateTime(e.to) + ")\n";
         }
         return "";
     }

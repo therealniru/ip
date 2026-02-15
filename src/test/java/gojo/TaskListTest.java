@@ -29,4 +29,30 @@ public class TaskListTest {
         List<Task> result = taskList.findTasks("gym");
         assertEquals(0, result.size());
     }
+
+    @Test
+    public void isDuplicate_duplicateTask_returnsTrue() {
+        TaskList taskList = new TaskList();
+        Task t1 = new Todo("read book");
+        taskList.add(t1);
+        Task t2 = new Todo("read book");
+        assertEquals(true, taskList.isDuplicate(t2));
+    }
+
+    @Test
+    public void isDuplicate_differentTask_returnsFalse() {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("read book"));
+        assertEquals(false, taskList.isDuplicate(new Todo("write code")));
+    }
+
+    @Test
+    public void delete_validIndex_removesTask() throws ChatbotExceptions {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("read book"));
+        assertEquals(1, taskList.size());
+
+        taskList.delete(0);
+        assertEquals(0, taskList.size());
+    }
 }
