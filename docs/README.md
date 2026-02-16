@@ -179,3 +179,4 @@ Optional: Run the text UI tests to verify functionality:
 Bash
 ./text-ui-test/runtest.sh
 "Don't worry, I'm the strongest."
+"Nah, I'd win." 

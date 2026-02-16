@@ -1,2 +1,3 @@
 T | 0 | buy bread
 T | 1 | buy six eyes
+T | 0 | end jogo
