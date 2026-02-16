@@ -17,7 +17,24 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
- * Controller for MainWindow. Provides the layout for the other controls.
+ * Controller class for the main application window.
+ * <p>
+ * This class manages the primary user interface components,
+ * including the dialog display area, user input field, send button,
+ * and animated background effects.
+ * </p>
+ *
+ * <p>
+ * It is responsible for:
+ * <ul>
+ *     <li>Initializing UI components and bindings</li>
+ *     <li>Handling user input and displaying responses</li>
+ *     <li>Managing the animated Matrix-style background</li>
+ *     <li>Coordinating interactions between the UI and the Gojo backend logic</li>
+ * </ul>
+ * </p>
+ * <p>
+ * This class extends {@code AnchorPane} and is controlled via FXML.
  */
 public class MainWindow extends AnchorPane {
     private static final int FONT_SIZE = 14;
