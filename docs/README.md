@@ -1,4 +1,4 @@
-# Gojo Saturo- The Cursed Task Manager
+# Gojo Satoru - The Cursed Task Manager
 
 > "Throughout heaven and earth, I alone am the honored one."
 
@@ -129,7 +129,34 @@ Plaintext
 Noted. I've removed this task:
   [D][ ] submit report (by: Aug 30 2025)
 Now you have 6 tasks in the list.
-7. bye - Exit
+7. find - Search Tasks
+
+Finds tasks that contain the specified keyword. My Six Eyes don't miss a thing—if you wrote it, I'll find it.
+
+Example:
+
+Bash
+find book
+Output:
+
+Plaintext
+Found matches! My Six Eyes don't miss a thing:
+1. [D][ ] return book (by: Sunday)
+2. [T][ ] read book
+8. schedule - View Schedule
+
+Checks your timeline for a specific date. A sorcerer must always be aware of their future commitments.
+
+Example:
+
+Bash
+schedule 2026-02-20
+Output:
+
+Plaintext
+Time is relative, but here is your schedule for Feb 20 2026:
+1. [D][ ] exorcise curses (by: Feb 20 2026 18:00)
+9. bye - Exit
 
 Exits the application.
 
@@ -139,7 +166,7 @@ Plaintext
 Bye! Don't let the curses bite. Stay Limitless ♾️
 Getting Started
 [!IMPORTANT]
-Prerequisite: Ensure you have Java 17 or higher installed on your machine to run this sorcery.
+Prerequisite: Ensure you have Java 17 (or higher) installed on your machine to run this sorcery.
 
 Navigate to the project root.
 
