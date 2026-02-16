@@ -74,20 +74,20 @@ public class Storage {
 
         Task task = null;
         switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                String by = parts[3];
-                task = new Deadline(description, by);
-                break;
-            case "E":
-                String from = parts[3];
-                String to = parts[4];
-                task = new Event(description, from, to);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            String by = parts[3];
+            task = new Deadline(description, by);
+            break;
+        case "E":
+            String from = parts[3];
+            String to = parts[4];
+            task = new Event(description, from, to);
+            break;
+        default:
+            throw new IllegalStateException("Unexpected value: " + type);
         }
 
         if (task != null && isDone) {

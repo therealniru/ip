@@ -78,28 +78,28 @@ public class Gojo {
             String arguments = Parser.getArguments(input);
 
             switch (command) {
-                case BYE:
-                    return handleBye();
-                case LIST:
-                    return handleList();
-                case UNMARK:
-                    return handleUnmark(arguments);
-                case MARK:
-                    return handleMark(arguments);
-                case TODO:
-                    return handleTodo(arguments);
-                case DEADLINE:
-                    return handleDeadline(arguments);
-                case EVENT:
-                    return handleEvent(arguments);
-                case DELETE:
-                    return handleDelete(arguments);
-                case SCHEDULE:
-                    return handleSchedule(arguments);
-                case FIND:
-                    return handleFind(arguments);
-                default:
-                    throw new IllegalStateException("I do not understand that command. Please be precise.");
+            case BYE:
+                return handleBye();
+            case LIST:
+                return handleList();
+            case UNMARK:
+                return handleUnmark(arguments);
+            case MARK:
+                return handleMark(arguments);
+            case TODO:
+                return handleTodo(arguments);
+            case DEADLINE:
+                return handleDeadline(arguments);
+            case EVENT:
+                return handleEvent(arguments);
+            case DELETE:
+                return handleDelete(arguments);
+            case SCHEDULE:
+                return handleSchedule(arguments);
+            case FIND:
+                return handleFind(arguments);
+            default:
+                throw new IllegalStateException("I do not understand that command. Please be precise.");
             }
         } catch (ChatbotExceptions ce) {
             return ce.getMessage();

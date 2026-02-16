@@ -1,3 +1,2 @@
 T | 0 | buy bread
-T | 1 | sell bread
 T | 1 | buy six eyes

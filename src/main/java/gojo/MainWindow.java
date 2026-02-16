@@ -133,7 +133,7 @@ public class MainWindow extends AnchorPane {
                 gojoDialog);
         userInput.clear();
 
-        if (input.trim().equalsIgnoreCase("bye")) {
+        if (input.trim().equalsIgnoreCase("bye") || input.trim().equalsIgnoreCase("b")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
             delay.setOnFinished(event -> {
                 Platform.exit();
