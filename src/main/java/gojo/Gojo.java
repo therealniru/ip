@@ -24,13 +24,18 @@ public class Gojo {
     private static final String FILE_PATH = "data/gojo.txt";
     private static final String MSG_DISMISSED = "Dismissed.";
     private static final String MSG_LIST_HEADER = "My Six Eyes see everything. Here are your tasks:";
-    private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark. Don't make me repeat myself.";
+    private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark. "
+            + "Don't make me repeat myself.";
     private static final String MSG_MARK_ERROR = "Please specify a task number to mark. Focus.";
-    private static final String MSG_TODO_EMPTY = "OOPS!!! A todo cannot be empty. Are you failing to control your cursed energy?";
-    private static final String MSG_DEADLINE_EMPTY = "OOPS!!! Intricate details matter. The description cannot be empty.";
-    private static final String MSG_DEADLINE_TIME_EMPTY = "OOPS!!! The deadline cannot be empty. Time is relative, but not optional.";
+    private static final String MSG_TODO_EMPTY = "OOPS!!! A todo cannot be empty. "
+            + "Are you failing to control your cursed energy?";
+    private static final String MSG_DEADLINE_EMPTY = "OOPS!!! Intricate details matter. "
+            + "The description cannot be empty.";
+    private static final String MSG_DEADLINE_TIME_EMPTY = "OOPS!!! The deadline cannot be empty. "
+            + "Time is relative, but not optional.";
     private static final String MSG_EVENT_EMPTY = "OOPS!!! The description of an event cannot be empty.";
-    private static final String MSG_EVENT_TIME_EMPTY = "OOPS!!! The event time is missing. A sorcerer must be punctual.";
+    private static final String MSG_EVENT_TIME_EMPTY = "OOPS!!! The event time is missing. "
+            + "A sorcerer must be punctual.";
     private static final String MSG_DELETE_ERROR = "Please specify a task number to delete. Exorcise it properly.";
     private static final String MSG_SCHEDULE_ERROR = "Please specify a date to view the schedule.";
     private static final String MSG_FIND_ERROR = "Please specify a keyword to search for. Use your eyes.";
