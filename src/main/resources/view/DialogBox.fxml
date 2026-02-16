@@ -20,7 +20,6 @@
                 fx:id="dialog"
                 wrapText="true"
                 textOverrun="CLIP"
-                style="-fx-padding: 10; -fx-background-radius: 15; -fx-background-color: #D8BFD8;"
                 />
 
         <!-- Profile picture -->
