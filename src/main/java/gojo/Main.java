@@ -12,8 +12,17 @@ import javafx.stage.Stage;
  * A GUI for Gojo using FXML.
  */
 public class Main extends Application {
-
+    /**
+     * Main entry point of the Gojo application.
+     * Initializes and launches the primary UI.
+     */
     private Gojo gojo = new Gojo();
+
+    /**
+     * Starts the JavaFX application.
+     *
+     * @param stage primary stage for this application
+     */
 
     @Override
     public void start(Stage stage) {
