@@ -6,7 +6,7 @@ package gojo;
  */
 public class Launcher {
     public static void main(String[] args) {
-
+        // Starting point of Gojo Saturo
         Main.main(args);
     }
 }
