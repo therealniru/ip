@@ -132,7 +132,7 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage),
                 gojoDialog);
         userInput.clear();
-
+        // Handle termination command
         if (input.trim().equalsIgnoreCase("bye") || input.trim().equalsIgnoreCase("b")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
             delay.setOnFinished(event -> {
