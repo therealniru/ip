@@ -62,7 +62,8 @@ Hey! I'm gojo 🤞🏻.
 Consider this your domain of organisation.
 What would you like to do?
 ____________________________________________________________
-You: Here are the tasks in your list:
+You: Domain Expansion: Unfinished Checklist.
+Here are the tasks in your list:
 ____________________________________________________________
 You: Got it. I've added this task:
   [T][ ] read book
@@ -76,7 +77,8 @@ You: Got it. I've added this task:
   [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 Now you have 3 tasks in the list.
 ____________________________________________________________
-You: Here are the tasks in your list:
+You: Domain Expansion: Unfinished Checklist.
+Here are the tasks in your list:
 1. [T][ ] read book
 2. [D][ ] return book (by: Jun 6 2019)
 3. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
@@ -85,7 +87,8 @@ You: Noted. I've removed this task:
   [T][ ] read book
 Now you have 2 tasks in the list.
 ____________________________________________________________
-You: Here are the tasks in your list:
+You: Domain Expansion: Unfinished Checklist.
+Here are the tasks in your list:
 1. [D][ ] return book (by: Jun 6 2019)
 2. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
@@ -95,7 +98,8 @@ You: OOPS!!! The task number must be an integer.
 ____________________________________________________________
 You: Please specify a task number to delete.
 ____________________________________________________________
-You: Here are the tasks in your list:
+You: Domain Expansion: Unfinished Checklist.
+Here are the tasks in your list:
 1. [D][ ] return book (by: Jun 6 2019)
 2. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________

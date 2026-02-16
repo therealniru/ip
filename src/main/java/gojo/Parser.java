@@ -55,6 +55,7 @@ public class Parser {
             commandStr = "UNMARK";
             break;
         case "B":
+        case "QUIT":
             commandStr = "BYE";
             break;
         case "S":

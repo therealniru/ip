@@ -1,15 +1,14 @@
 package gojo;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Handles loading tasks from the file and saving tasks in the file.
@@ -45,17 +44,16 @@ public class Storage {
         if (!file.exists()) {
             return new ArrayList<>();
         }
-        try {
-            return Files.lines(Paths.get(filePath))
-                .map(line -> {
-                    try {
-                        return parseTaskFromLine(line);
-                    } catch (Exception e) {
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        try (Stream<String> lines = Files.lines(Paths.get(filePath))) {
+            return lines.map(line -> {
+                try {
+                    return parseTaskFromLine(line);
+                } catch (Exception e) {
+                    return null;
+                }
+            })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             System.out.println("Error loading data from file: " + e.getMessage());
             return new ArrayList<>();
@@ -106,18 +104,11 @@ public class Storage {
     public void save(List<Task> tasks) throws ChatbotExceptions {
         assert tasks != null : "Tasks list cannot be null";
         try {
-            FileWriter writer = new FileWriter(filePath);
-            tasks.stream()
-                .map(task -> task.toFileFormat() + System.lineSeparator())
-                .forEach(line -> {
-                    try {
-                        writer.write(line);
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                });
-            writer.close();
-        } catch (IOException | UncheckedIOException e) {
+            List<String> lines = tasks.stream()
+                    .map(Task::toFileFormat)
+                    .collect(Collectors.toList());
+            Files.write(Paths.get(filePath), lines);
+        } catch (IOException e) {
             throw new ChatbotExceptions("Error saving data: " + e.getMessage());
         }
     }

@@ -23,10 +23,10 @@ import java.util.stream.IntStream;
 public class Gojo {
     // Path to the file where tasks are persisted.
     private static final String FILE_PATH = "data/gojo.txt";
-    private static final String MSG_DISMISSED = "Dismissed.";
-    private static final String MSG_GREETING = "Greetings. I am Gojo. I am here to manage your tasks. "
-            + "You may begin.\n\n";
-    private static final String MSG_LIST_HEADER = "Here are the tasks in your list:\n";
+    private static final String MSG_DISMISSED = "Bye, until next time - Stay Limitless ♾️";
+    private static final String MSG_GREETING = "";
+    private static final String MSG_LIST_HEADER = "Domain Expansion: Unfinished Checklist.\n"
+            + "Here are the tasks in your list:\n";
     private static final String MSG_UNMARK_ERROR = "Please specify a task number to unmark.";
     private static final String MSG_MARK_ERROR = "Please specify a task number to mark.";
     private static final String MSG_TODO_EMPTY = "OOPS!!! The description of a todo cannot be empty.";
@@ -49,13 +49,20 @@ public class Gojo {
     private Storage storage;
 
     /**
-     * Constructs a new Gojo application instance.
-     * Initializes the UI, Storage, and attempts to load existing tasks.
-     * If loading fails, it starts with an empty task list.
+     * Constructs a new Gojo application instance with default file path.
      */
     public Gojo() {
+        this(FILE_PATH);
+    }
+
+    /**
+     * Constructs a new Gojo application with a specified file path.
+     *
+     * @param filePath The path to the file where tasks are stored.
+     */
+    public Gojo(String filePath) {
         ui = new UI();
-        storage = new Storage(FILE_PATH);
+        storage = new Storage(filePath);
         // Attempt to load tasks from the defined file path
         tasks = new TaskList(storage.load());
     }
@@ -114,14 +121,14 @@ public class Gojo {
         StringBuilder response = new StringBuilder();
         response.append(MSG_GREETING);
         response.append(MSG_LIST_HEADER);
-        IntStream.range(0, tasks.size())
-                .forEach(i -> {
-                    try {
-                        response.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
-                    } catch (ChatbotExceptions e) {
-                        e.printStackTrace();
-                    }
-                });
+        for (int i = 0; i < tasks.size(); i++) {
+            try {
+                response.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+            } catch (ChatbotExceptions e) {
+                response.append("Error retrieving task ").append(i + 1).append(": ")
+                        .append(e.getMessage()).append("\n");
+            }
+        }
         return response.toString();
     }
 

@@ -125,13 +125,18 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getGojoDialog(response, gojoImage));
         userInput.clear();
 
-        if (input.trim().equalsIgnoreCase("bye")) {
-            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-            delay.setOnFinished(event -> {
-                Platform.exit();
-                System.exit(0);
-            });
-            delay.play();
+        try {
+            Command command = Parser.parseCommand(input);
+            if (command == Command.BYE) {
+                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+                delay.setOnFinished(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+                delay.play();
+            }
+        } catch (ChatbotExceptions e) {
+            // Ignore invalid commands for exit check
         }
     }
 }
