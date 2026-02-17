@@ -1,5 +1,5 @@
-T | 0 | buy bread
 T | 1 | buy six eyes
 T | 0 | end jogo
 D | 0 | sukuna | 2026-09-09 0900
 E | 0 | teach yuji | 2026-02-17 2359 | 2026-02-18 2359
+T | 0 | save yuji

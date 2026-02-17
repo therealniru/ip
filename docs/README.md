@@ -1,8 +1,13 @@
 # Gojo Satoru - The Cursed Task Manager
 
-> "Throughout heaven and earth, I alone am the honored one."
+> "Throughout heaven and earth, I alone am the honored one." -Gojo
 
-**Gojo** is a Command Line Interface (CLI) task manager bot inspired by the strongest sorcerer, Gojo Satoru. It helps you track your Todos, Deadlines, and Events with the precision of the Six Eyes.
+**Gojo** is a Graphical User Interface (GUI) task manager inspired by Gojo Satoru from Jujutsu Kaisen. Through an intuitive interface, he helps you manage your Todos, Deadlines, and Events with the clarity of the Six Eyes.
+
+
+## UI Preview
+
+![Gojo UI](Ui.png)
 
 > [!NOTE]
 > **Persistence:** Your tasks are automatically saved to the "Infinite Void" (your hard disk) after every command. You won't lose them even if you exit.
