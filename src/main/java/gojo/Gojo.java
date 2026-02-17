@@ -113,6 +113,9 @@ public class Gojo {
     }
 
     private String handleList() {
+        if (tasks.size() == 0) {
+            return "Your task list is empty. Even the Six Eyes see nothing.";
+        }
         StringBuilder response = new StringBuilder();
         response.append(MSG_LIST_HEADER);
         if (tasks.size() > 0) {
