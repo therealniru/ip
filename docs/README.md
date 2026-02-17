@@ -164,7 +164,36 @@ Output:
 
 Plaintext
 Bye! Don't let the curses bite. Stay Limitless ♾️
-Getting Started
+---
+
+## Shortcuts ⚡
+
+For sorcerers who prefer speed over incantations, Gojo understands.
+
+You can use the following shortcuts instead of typing full commands:
+
+| Shortcut | Full Command |
+| :--- | :--- |
+| `t` | `todo` |
+| `l` | `list` |
+| `d` | `deadline` |
+| `e` | `event` |
+| `f` | `find` |
+| `s` | `schedule` |
+
+**Example Usage:**
+
+```bash
+t master domain expansion
+d submit report /by 2026-02-20
+l
+f curse
+s 2026-02-20
+
+```markdown
+---
+
+## Getting Started 🚀
 [!IMPORTANT]
 Prerequisite: Ensure you have Java 17 (or higher) installed on your machine to run this sorcery.
 
