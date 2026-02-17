@@ -1,1 +1,2 @@
-T | 1 | buy 6 eyes
+T | 0 | buy 6 eyes
+D | 0 | defeat sukuna | 2026-09-10 2359

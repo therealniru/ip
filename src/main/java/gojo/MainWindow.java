@@ -136,7 +136,15 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        if (input.isEmpty()) {
+            return;
+        }
+
         String response = gojo.getResponse(input);
+
+        if (response == null || response.trim().isEmpty()) {
+            response = "Hmm... even I don't have an answer for that.";
+        }
 
         DialogBox gojoDialog;
         if (response.startsWith("OOPS!!!") || response.startsWith("Something went wrong:")) {
